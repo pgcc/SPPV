@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+    <meta charset="UTF-8">
+    <title>Provenance Ontology</title>
+
+    <link href="css/jquery-ui.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <script src="js/jquery-2.1.4.min.js"></script> 
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/d3.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/indexConfig.js"></script>
+
+
+    <div id="config">
+        <header>
+            <h1>Provenance Ontology</h1>Ontology: <span class="codeLike" id="owlPath"></span>
+        </header>
+        <main>
+            <div id="graph">
+            </div>
+        </main>
+        <aside>
+            <form>
+                <h2 class="demoHeaders">Display Options</h2>
+                <div class="filters">
+                    <span>Symbols</span>
+                    <div id="radioset">
+                        <input type="radio" id="circles" name="icon" value="circles" checked><label for="circles">Circles</label>
+                        <input type="radio" id="bpmn" name="icon" value="bpmn"><label for="bpmn">BPMN</label>
+                        <input type="radio" id="prov" name="icon" value="prov"><label for="prov">PROV</label>
+                    </div>
+                </div>
+                <div class="filters">
+                    <div>Zoom</div><br>
+                    <div id="zoomValue"></div>
+                    <div id="zoomSlider"></div>
+                    20 - 200
+                </div>
+                <h2 class="demoHeaders">Filter Options</h2>
+                <div class="filters">
+                    <span class="filterTitle">Arcs</span>
+                    <div class="boxGroup">
+                        <input type="checkbox" name="assertedArcs" id="assertedArcs" checked><label for="assertedArcs">Asserted</label>
+                        <input type="checkbox" name="inferredArcs" id="inferredArcs"><label for="inferredArcs">Inferred</label>
+                    </div>
+                </div>
+                <div class="filters">
+                    <span class="filterTitle" id="titleActors">Actors/Agents</span>
+                    <div class="boxGroup">
+                        <input type="checkbox" name="actorsNames" id="actorsNames" checked><label for="actorsNames">Names</label>
+                        <input type="checkbox" name="actors" id="actors" checked><label for="actors">Icons</label>
+                    </div>
+                </div>
+                <div class="filters">
+                    <span class="filterTitle" id="titleTasks">Tasks/Activities</span>
+                    <div class="boxGroup">
+                        <input type="checkbox" name="tasksNames" id="tasksNames" checked><label for="tasksNames">Names</label>
+                        <input type="checkbox" name="tasks" id="tasks" checked><label for="tasks">Icons</label>
+                    </div>
+                </div>
+                <div class="filters">
+                    <span class="filterTitle" id="titleEntities">Data Object/Entities</span>
+                    <div class="boxGroup">
+                        <input type="checkbox" name="entitiesNames" id="entitiesNames" checked><label for="entitiesNames">Names</label>
+                        <input type="checkbox" name="entities" id="entities" checked><label for="entities">Icons</label>
+                    </div>
+                </div>
+            </form>
+        </aside>
+    </div>
+    <div id="divTip">
+        <table>
+            <tbody id="tableTip">
+            </tbody>
+        </table>
+    </div>
+</html>
