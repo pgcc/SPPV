@@ -57,7 +57,7 @@ $(document).ready(function () {
                 .friction(0.9)
                 .size([width, height])
                 .nodes(graph.nodes)
-                .links(graph.links)
+                .links(graph.paths)
                 .start();
 
         //Defines the arrow for the links
@@ -80,13 +80,13 @@ $(document).ready(function () {
                 .attr("d", "M0,-5L10,0L0,5");
 
         var path = svg.selectAll("path")
-                .data(graph.links)
+                .data(graph.paths)
                 .enter().append("path")
                 .attr("class", function (p) {
                     var pathClass = "";
-                    if (p.inferred)
-                        pathClass = "inferred";
-                    else
+                    //if (p.inferred)
+                        //pathClass = "inferred";
+                    //else
                         pathClass = "asserted";
                     pathClass += " s" + p.source.index + " t" + p.target.index;
                     return pathClass;
@@ -103,9 +103,9 @@ $(document).ready(function () {
 
                 })
                 .attr("marker-end", function (p) {
-                    if (p.inferred)
-                        return "url(#inferred)";
-                    else
+                    //if (p.inferred)
+                        //return "url(#inferred)";
+                    //else
                         return "url(#asserted)";
                 });
                 
