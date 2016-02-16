@@ -89,6 +89,9 @@ $(document).ready(function () {
                 .on("mouseover", function (p) {
                     //alert(JSON.stringify(p));
                 })
+                .on("mouseout", function () {
+                    tip.style("opacity", 0);
+                })
                 .on("click", function (p) {
                     writeTipLink(p);
                     tip.style("opacity", 0.9);

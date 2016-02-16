@@ -2,25 +2,6 @@ $(document).ready(function () {
 //------------------------------------------------------------------------------
     $("#radioset").buttonset();
     $(".boxGroup").buttonset();
-    $("#distanceSlider").slider({
-        min: 40,
-        max: 200,
-        value: 80,
-        slide: function (event, ui) {
-            $("#distanceValue").html(ui.value);
-            d3.layout.force().linkDistance(ui.value);
-        }
-    });
-    $("#distanceValue").html($("#distanceSlider").slider("value"));
-    $("#zoomSlider").slider({
-        min: 20,
-        max: 200,
-        value: 100,
-        slide: function (event, ui) {
-            $("#zoomValue").html(ui.value);
-        }
-    });
-    $("#zoomValue").html($("#zoomSlider").slider("value"));
 //------------------------------------------------------------------------------
     $.post("FrontController?action=ReadOWLPath", function (string) {
         $("#owlPath").html(string);
