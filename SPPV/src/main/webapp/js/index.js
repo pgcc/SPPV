@@ -12,35 +12,40 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
-    var tip = d3.select("#divTip")
+    var nodeTip = d3.select("#nodeTip")
+            .style("opacity", 0);
+    var linkTip = d3.select("#linkTip")
             .style("opacity", 0);
 
-    function writeTipNode(node) {
-        var content = "<tr><th colspan=\"2\">NODE INFO</th></tr>";
-        content += "<tr><th>ATTRIBUTE</th><th>VALUE</th></tr>";
-        content += "<tr><td>NAME</td><td>" + node.name + "</td></tr>";
-        content += "<tr><td>TYPE</td><td>" + node.type + "</td></tr>";
-        $("#tableTip").html(content);
-        tip.style("left", (d3.event.pageX + 20) + "px")
+    function writeNodeTip(node) {
+        $("#tipNodeName").html(node.name);
+        $("#tipNodeType").html(node.type);
+        nodeTip.style("left", (d3.event.pageX + 20) + "px")
                 .style("top", (d3.event.pageY - 20) + "px");
     }
 
-    function writeTipLink(link) {
-        var content = "<tr><th colspan=\"2\">PATH INFO</th></tr>";
-        content += "<tr><th>ATTRIBUTE</th><th>VALUE</th></tr>";
-        content += "<tr><td>SOURCE</td><td>" + link.source.name + "</td></tr>";
-        content += "<tr><td>TARGET</td><td>" + link.target.name + "</td></tr>";
-        $("#tableTip").html(content);
-        tip.style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 20) + "px");
+    function writeLinkTip(path) {
+        var list = "<tr><th>Link</th><th>Type</th></tr>";
+        for (l in path.links) {
+            list += "<tr><td>" + path.links[l].name + "</td>"
+                    + "<td class=\"inf" + path.links[l].inferred + "\">"
+                    + path.links[l].inferred + "</td></tr>";
+        }
+        list += "</table>";
+        $("#tipLinkType").html(list);
+        $("#tipSourceName").html(path.source.name);
+        $("#tipTargetName").html(path.target.name);
+        linkTip.style("left", (d3.event.pageX + 30) + "px")
+                .style("top", (d3.event.pageY - 30) + "px");
     }
+    
     var svg = d3.select("#graph")
             .append("svg");
 
     $(window).resize();
 
     $.post("FrontController?action=ReadGraph", function (json) {
-        //alert(JSON.stringify(json));
+        alert(JSON.stringify(json));
         var width = $("#graph").width();
         var height = $("#graph").height();
         var graph = json;
@@ -90,11 +95,11 @@ $(document).ready(function () {
                     //alert(JSON.stringify(p));
                 })
                 .on("mouseout", function () {
-                    tip.style("opacity", 0);
+                    linkTip.style("opacity", 0);
                 })
                 .on("click", function (p) {
-                    writeTipLink(p);
-                    tip.style("opacity", 0.9);
+                    writeLinkTip(p);
+                    linkTip.style("opacity", 0.9);
 
                 })
                 .attr("marker-end", function (p) {
@@ -133,11 +138,11 @@ $(document).ready(function () {
                 })
                 .on("mouseout", function () {
                     setOpacity(1.0);
-                    tip.style("opacity", 0);
+                    nodeTip.style("opacity", 0);
                 })
                 .on("click", function (n) {
-                    writeTipNode(n);
-                    tip.style("opacity", 0.9);
+                    writeNodeTip(n);
+                    nodeTip.style("opacity", 0.9);
                 })
                 .call(force.drag);
 
