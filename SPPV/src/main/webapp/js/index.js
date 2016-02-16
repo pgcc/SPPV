@@ -45,7 +45,7 @@ $(document).ready(function () {
     $(window).resize();
 
     $.post("FrontController?action=ReadGraph", function (json) {
-        alert(JSON.stringify(json));
+        //alert(JSON.stringify(json));
         var width = $("#graph").width();
         var height = $("#graph").height();
         var graph = json;
@@ -62,7 +62,7 @@ $(document).ready(function () {
 
         //Defines the arrow for the links
         svg.append("defs").selectAll("marker")
-                .data(["inferred", "asserted"])
+                .data(["inferred", "asserted", "both"])
                 .enter().append("marker")
                 .attr("id", function (d) {
                     return d;
@@ -83,16 +83,9 @@ $(document).ready(function () {
                 .data(graph.paths)
                 .enter().append("path")
                 .attr("class", function (p) {
-                    var pathClass = "";
-                    //if (p.inferred)
-                        //pathClass = "inferred";
-                    //else
-                        pathClass = "asserted";
+                    var pathClass = p.type;
                     pathClass += " s" + p.source.index + " t" + p.target.index;
                     return pathClass;
-                })
-                .on("mouseover", function (p) {
-                    //alert(JSON.stringify(p));
                 })
                 .on("mouseout", function () {
                     linkTip.style("opacity", 0);
@@ -103,10 +96,7 @@ $(document).ready(function () {
 
                 })
                 .attr("marker-end", function (p) {
-                    //if (p.inferred)
-                        //return "url(#inferred)";
-                    //else
-                        return "url(#asserted)";
+                        return "url(#" + p.type + ")";
                 });
                 
         var node = svg.selectAll("image")

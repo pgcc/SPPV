@@ -78,19 +78,27 @@ select {
 }
 path.asserted {
     fill: none;
-    stroke: black;
+    stroke: #000;
     stroke-width: 1.5px;
 }
 path.inferred {
     fill: none;
-    stroke: red;
+    stroke: #f00;
+    stroke-width: 1.5px;
+}
+path.both {
+    fill: none;
+    stroke: #aa0;
     stroke-width: 1.5px;
 }
 path#inferred{
-    fill: red;
+    fill: #f00;
 }
 path#asserted{
-    fill: black;
+    fill: #000;
+}
+path#both{
+    fill: #aa0;
 }
 text {
     font: 10px sans-serif;

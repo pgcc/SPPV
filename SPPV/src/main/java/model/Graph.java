@@ -47,24 +47,26 @@ public class Graph {
         }
     }
 
-    /*
-    public void assertLinks(String name, Node source, ArrayList<Node> targets) {
-        int size = nodes.size();
-        for (int s = 0; s < size; s++) {
+    public void assertLinks(Node source, ArrayList<Node> targets, ArrayList<String> names) {
+        for (int s = 0; s < nodes.size(); s++) {
             if (nodes.get(s).sameAs(source)) {
-                for (Node target : targets) {
-                    for (int t = 0; t < size; t++) {
+                for (int i = 0; i < targets.size(); i++) {
+                    Node target = targets.get(i);
+                    for (int t = 0; t < nodes.size(); t++) {
                         if (nodes.get(t).sameAs(target)) {
                             Path path = findPath(s, t);
-                            if (path != null) {
-                                //path.setInferred(false);
+                            if (path == null) {
+                                System.out.println("ERROR - Asserted ontology has more links than inferred ontology");
+                            } else {
+                                path.assertLink(names.get(i));
                             }
                         }
                     }
                 }
+                break;
             }
         }
-    }*/
+    }
 
     private Path findPath(int s, int t) {
         Path path;
@@ -75,5 +77,11 @@ public class Graph {
             }
         }
         return null;
+    }
+
+    public void checkPaths() {
+        for (Path path : paths) {
+            path.checkType();
+        }
     }
 }
