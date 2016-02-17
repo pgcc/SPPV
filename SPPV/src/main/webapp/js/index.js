@@ -38,7 +38,7 @@ $(document).ready(function () {
         linkTip.style("left", (d3.event.pageX + 30) + "px")
                 .style("top", (d3.event.pageY - 30) + "px");
     }
-    
+
     var svg = d3.select("#graph")
             .append("svg");
 
@@ -74,9 +74,6 @@ $(document).ready(function () {
                 .attr("markerHeight", 6)
                 .attr("orient", "auto")
                 .append("path")
-                .attr("id", function (d) {
-                    return d;
-                })
                 .attr("d", "M0,-5L10,0L0,5");
 
         var path = svg.selectAll("path")
@@ -85,6 +82,13 @@ $(document).ready(function () {
                 .attr("class", function (p) {
                     var pathClass = p.type;
                     pathClass += " s" + p.source.index + " t" + p.target.index;
+                    if (p.links.length <= 1) {
+                        pathClass += " size1";
+                    } else if (p.links.length <= 2) {
+                        pathClass += " size2";
+                    } else {
+                        pathClass += " size3";
+                    }
                     return pathClass;
                 })
                 .on("mouseout", function () {
@@ -96,9 +100,9 @@ $(document).ready(function () {
 
                 })
                 .attr("marker-end", function (p) {
-                        return "url(#" + p.type + ")";
+                    return "url(#" + p.type + ")";
                 });
-                
+
         var node = svg.selectAll("image")
                 .data(graph.nodes)
                 .enter().append("image")

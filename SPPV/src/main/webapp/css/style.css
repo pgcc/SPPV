@@ -79,25 +79,31 @@ select {
 path.asserted {
     fill: none;
     stroke: #000;
-    stroke-width: 1.5px;
 }
 path.inferred {
     fill: none;
     stroke: #f00;
-    stroke-width: 1.5px;
 }
 path.both {
     fill: none;
     stroke: #aa0;
-    stroke-width: 1.5px;
 }
-path#inferred{
+path.size1{
+    stroke-width: 1px;
+}
+path.size2{
+    stroke-width: 2px;
+}
+path.size3{
+    stroke-width: 3px;
+}
+marker#inferred{
     fill: #f00;
 }
-path#asserted{
+marker#asserted{
     fill: #000;
 }
-path#both{
+marker#both{
     fill: #aa0;
 }
 text {
