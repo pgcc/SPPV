@@ -1,115 +1,126 @@
 $(document).ready(function () {
-//------------------------------------------------------------------------------
+
+    //---------- Creating the jQuery-UI widgets
     $("#radioset").buttonset();
-    $(".boxGroup").buttonset();
-//------------------------------------------------------------------------------
+    $("button").button();
+    $("#nodeA").combobox();
+    $("#nodeB").combobox();
+    //---------- Configuring the functions of each widget
     $.post("FrontController?action=ReadOWLPath", function (string) {
         $("#owlPath").html(string);
     }, "text");
-
-    $("input[type=checkbox][name=inferredLinks]").change(function () {
-        if ($("input[type=checkbox][name=inferredLinks]").prop("checked")) {
-            $("path.inferred").fadeIn();
-            $("marker.inferred").fadeIn();
-        } else {
-            $("path.inferred").fadeOut();
-            $("marker.inferred").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=assertedLinks]").change(function () {
-        if ($("input[type=checkbox][name=assertedLinks]").prop("checked")) {
-            $("path.asserted").fadeIn();
-            $("marker.asserted").fadeIn();
-        } else {
-            $("path.asserted").fadeOut();
-            $("marker.asserted").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=actors]").change(function () {
-        if ($("input[type=checkbox][name=actors]").prop("checked")) {
-            $("image.Agent").fadeIn();
-        } else {
-            $("image.Agent").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=actorsNames]").change(function () {
-        if ($("input[type=checkbox][name=actorsNames]").prop("checked")) {
-            $("text.AgentName").fadeIn();
-        } else {
-            $("text.AgentName").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=tasks]").change(function () {
-        if ($("input[type=checkbox][name=tasks]").prop("checked")) {
-            $("image.Activity").fadeIn();
-        } else {
-            $("image.Activity").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=tasksNames]").change(function () {
-        if ($("input[type=checkbox][name=tasksNames]").prop("checked")) {
-            $("text.ActivityName").fadeIn();
-        } else {
-            $("text.ActivityName").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=entities]").change(function () {
-        if ($("input[type=checkbox][name=entities]").prop("checked")) {
-            $("image.Entity").fadeIn();
-        } else {
-            $("image.Entity").fadeOut();
-        }
-    });
-
-    $("input[type=checkbox][name=entitiesNames]").change(function () {
-        if ($("input[type=checkbox][name=entitiesNames]").prop("checked")) {
-            $("text.EntityName").fadeIn();
-        } else {
-            $("text.EntityName").fadeOut();
-        }
-    });
 
     $("input[type=radio][name=icon]").change(function () {
         var images = d3.selectAll("image");
         if (this.value === "prov") {
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
-                    $("#titleTasks").html("Activities");
+                    $("#taskNameLabel").html("Activities");
                     return "./images/activity.png";
                 } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
-                    $("#titleActors").html("Agents");
+                    $("#actorNameLabel").html("Agents");
                     return "./images/agent.png";
                 } else {
-                    $("#titleEntities").html("Entities");
+                    $("#entityNameLabel").html("Entities");
                     return "./images/entity.png";
                 }
             });
         } else if (this.value === "bpmn") {
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
-                    $("#titleTasks").html("Task");
+                    $("#taskNameLabel").html("Task");
                     return "./images/task.png";
                 } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
-                    $("#titleActors").html("Actors");
+                    $("#actorNameLabel").html("Actors");
                     return "./images/actor.png";
                 } else {
-                    $("#titleEntities").html("Data Objects");
+                    $("#entityNameLabel").html("Data Objects");
                     return "./images/data.png";
                 }
             });
         } else {
-            $("#titleTasks").html("Tasks/Activities");
-            $("#titleActors").html("Actors/Agents");
-            $("#titleEntities").html("Data Object/Entities");
+            $("#taskNameLabel").html("Tasks/Activities");
+            $("#actorNameLabel").html("Actors/Agents");
+            $("#entityNameLabel").html("Data Object/Entities");
             images.attr("xlink:href", "./images/circle.png");
         }
     });
+
+    $("input[type=checkbox][name=allNames]").change(function () {
+        if ($("input[type=checkbox][name=allNames]").prop("checked")) {
+            $("#filterTable input[type=checkbox]").prop("checked", true);
+            $("text").fadeIn();
+        } else {
+            $("#filterTable input[type=checkbox]").prop("checked", false);
+            $("text").fadeOut();
+        }
+    });
+
+    $("input[type=checkbox][name=actorName]").change(function () {
+        if ($("input[type=checkbox][name=actorName]").prop("checked")) {
+            $("text.PersonName").fadeIn();
+        } else {
+            $("text.PersonName").fadeOut();
+        }
+    });
+
+    $("input[type=checkbox][name=taskName]").change(function () {
+        if ($("input[type=checkbox][name=taskName]").prop("checked")) {
+            $("text.ActivityName").fadeIn();
+        } else {
+            $("text.ActivityName").fadeOut();
+        }
+    });
+
+    $("input[type=checkbox][name=entityName]").change(function () {
+        if ($("input[type=checkbox][name=entityName]").prop("checked")) {
+            $("text.EntityName").fadeIn();
+        } else {
+            $("text.EntityName").fadeOut();
+        }
+    });
+
+    $("#filterNodes")
+            .click(function (event) {
+                event.preventDefault();
+                setOpacity(0.1);
+                var nA = $("#nodeA").val();
+                var nB = $("#nodeB").val();
+                d3.select("#node" + nA).style("opacity", 1.0);
+                d3.select("#name" + nA).style("opacity", 1.0);
+                d3.selectAll(".s" + nA).each(function (p) {
+                    d3.select(this).style("opacity", 1.0);
+                    d3.select("#node" + p.target.index).style("opacity", 1.0);
+                    d3.select("#name" + p.target.index).style("opacity", 1.0);
+                });
+                d3.selectAll(".t" + nA).each(function (p) {
+                    d3.select(this).style("opacity", 1.0);
+                    d3.select("#node" + p.source.index).style("opacity", 1.0);
+                    d3.select("#name" + p.source.index).style("opacity", 1.0);
+                });
+                d3.select("#node" + nB).style("opacity", 1.0);
+                d3.select("#name" + nB).style("opacity", 1.0);
+                d3.selectAll(".s" + nB).each(function (p) {
+                    d3.select(this).style("opacity", 1.0);
+                    d3.select("#node" + p.target.index).style("opacity", 1.0);
+                    d3.select("#name" + p.target.index).style("opacity", 1.0);
+                });
+                d3.selectAll(".t" + nB).each(function (p) {
+                    d3.select(this).style("opacity", 1.0);
+                    d3.select("#node" + p.source.index).style("opacity", 1.0);
+                    d3.select("#name" + p.source.index).style("opacity", 1.0);
+                });
+            });
+
+    $("#showAll")
+            .click(function (event) {
+                event.preventDefault();
+                setOpacity(1.0);
+            });
+
+    function setOpacity(value) {
+        d3.selectAll("image").style("opacity", value);
+        d3.selectAll(".path").style("opacity", value);
+        d3.selectAll("text").style("opacity", value);
+    }
 });
-
-

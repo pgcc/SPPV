@@ -9,10 +9,10 @@
 
     <script src="js/jquery-2.1.4.min.js"></script> 
     <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery-ui.custom-combobox.js"></script>
     <script src="js/d3.js"></script>
     <script src="js/index.js"></script>
     <script src="js/indexConfig.js"></script>
-
 
     <div id="config">
         <header>
@@ -35,32 +35,46 @@
                 </div>
                 <h2 class="demoHeaders">Filter Options</h2>
                 <div class="filters">
-                    <span class="filterTitle">Arcs</span>
-                    <div class="boxGroup">
-                        <input type="checkbox" name="assertedArcs" id="assertedArcs" checked><label for="assertedArcs">Asserted</label>
-                        <input type="checkbox" name="inferredArcs" id="inferredArcs"><label for="inferredArcs">Inferred</label>
-                    </div>
+                    <span class="filterTitle">Hide/Show Names</span>
+                    <table id="filterTable">
+                        <tbody>
+                            <tr>
+                                <td><input type="checkbox" name="allNames" id="allNames" checked></td>
+                                <td><label for="allNames">All Names</label></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="actorName" id="actorName" checked></td>
+                                <td><label for="actorName" id="actorNameLabel">Actors/Agents</label></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="taskName" id="taskName" checked></td>
+                                <td><label for="taskName" id="taskNameLabel">Tasks/Activities</label></td>
+                            </tr>
+                            <tr>
+                                <td><input type="checkbox" name="entityName" id="entityName" checked></td>
+                                <td><label for="entityName" id="entityNameLabel">Data Object/Entities</label></td>
+                            </tr>
+                        </tbody>
+                    </table>     
                 </div>
                 <div class="filters">
-                    <span class="filterTitle" id="titleActors">Actors/Agents</span>
-                    <div class="boxGroup">
-                        <input type="checkbox" name="actorsNames" id="actorsNames" checked><label for="actorsNames">Names</label>
-                        <input type="checkbox" name="actors" id="actors" checked><label for="actors">Icons</label>
+                    <span class="filterTitle">Hide Nodes</span>
+                    <div class="ui-widget">
+                        <label for="nodeA">Select a node:</label>
+                        <br>
+                        <select name="nodeA" id="nodeA">
+                            <option value="">Select a node...</option>
+                        </select>
                     </div>
-                </div>
-                <div class="filters">
-                    <span class="filterTitle" id="titleTasks">Tasks/Activities</span>
-                    <div class="boxGroup">
-                        <input type="checkbox" name="tasksNames" id="tasksNames" checked><label for="tasksNames">Names</label>
-                        <input type="checkbox" name="tasks" id="tasks" checked><label for="tasks">Icons</label>
+                    <div class="ui-widget">
+                        <label for="nodeB">Select a node:</label>
+                        <br>
+                        <select name="nodeB" id="nodeB">
+                            <option value="">Select a node...</option>
+                        </select>
                     </div>
-                </div>
-                <div class="filters">
-                    <span class="filterTitle" id="titleEntities">Data Object/Entities</span>
-                    <div class="boxGroup">
-                        <input type="checkbox" name="entitiesNames" id="entitiesNames" checked><label for="entitiesNames">Names</label>
-                        <input type="checkbox" name="entities" id="entities" checked><label for="entities">Icons</label>
-                    </div>
+                    <br>
+                    <button id="filterNodes">Filter nodes</button><button id="showAll">Show all nodes</button>
                 </div>
             </form>
         </aside>
@@ -69,9 +83,16 @@
         <strong>Type: </strong><span id="tipNodeType"></span><br>
         <strong>Name: </strong><span id="tipNodeName"></span><br>
     </div>
-    <div id="linkTip">
-        <strong>Source: </strong><span id="tipSourceName"></span><br>
-        <strong>Target: </strong><span id="tipTargetName"></span><br>
+    <div id="pathTip">
+        <table class="tableTip">
+            <tbody>
+                <tr><th>Source</th><th>Target</th></tr>
+                <tr>
+                    <td><span id="tipSourceName"></span></td>
+                    <td><span id="tipTargetName"></span></td>
+                </tr>
+            </tbody>
+        </table>
         <table class="tableTip">
             <tbody id="tipLinkType">
             </tbody>

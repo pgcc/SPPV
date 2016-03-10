@@ -13,23 +13,55 @@ import org.semanticweb.owlapi.model.OWLObjectPropertyExpression;
 public class GraphDAO {
 
     private static GraphDAO instance = new GraphDAO();
-    private Graph inferredGraph;
+    private Graph graph;
 
     private GraphDAO() {
-        //Inferred Graph
-        inferredGraph = new Graph();
-        //Load Nodes
-        Set<OWLNamedIndividual> individuals = OntologyDAO.getInstance().getInferredOntology().getIndividualsInSignature();
+        //Asserted Graph
+        graph = new Graph();
+        //Load All Nodes
+        Set<OWLNamedIndividual> individuals = OntologyDAO.getInstance().getAssertedOntology().getIndividualsInSignature();
         for (OWLNamedIndividual individual : individuals) {
-            Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getInferredOntology());
+            Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getAssertedOntology());
             if (!types.isEmpty()) {
                 String name = individual.getIRI().getFragment();
                 String type = types.toString();
                 type = filterUrl(type);
-                inferredGraph.addNode(new Node(name, type));
+                graph.addNode(new Node(name, type));
             }
         }
-        //Load Links
+        //Load Asserted Links
+        for (OWLNamedIndividual individual : individuals) {
+            Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getAssertedOntology());
+            if (!types.isEmpty()) {
+                String name = individual.getIRI().getFragment();
+                String type = types.toString();
+                type = filterUrl(type);
+                Node source = new Node(name, type);
+                ArrayList<Node> targets = new ArrayList<>();
+                ArrayList<String> propertyNames = new ArrayList<>();
+                Map<OWLObjectPropertyExpression, Set<OWLIndividual>> individualMap = individual.getObjectPropertyValues(OntologyDAO.getInstance().getAssertedOntology());
+                Set<OWLObjectPropertyExpression> propertiesSet = individualMap.keySet();
+                for (OWLObjectPropertyExpression property : propertiesSet) {
+                    String propertyName = property.toString();
+                    propertyName = filterUrl(propertyName);
+                    Set<OWLIndividual> individualSet = individualMap.get(property);
+                    for (OWLIndividual individualProperty : individualSet) {
+                        Set<OWLClassExpression> targetTypes = individualProperty.getTypes(OntologyDAO.getInstance().getAssertedOntology());
+                        if (!targetTypes.isEmpty()) {
+                            String targetName = individualProperty.asOWLNamedIndividual().getIRI().getFragment();
+                            String targetType = targetTypes.toString();
+                            targetType = filterUrl(targetType);
+                            targets.add(new Node(targetName, targetType));
+                            propertyNames.add(propertyName);
+                        }
+                    }
+                }
+                if (!targets.isEmpty()) {
+                    graph.addLink(source, targets, propertyNames);
+                }
+            }
+        }
+        //Load Inferred Links
         for (OWLNamedIndividual individual : individuals) {
             Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getInferredOntology());
             if (!types.isEmpty()) {
@@ -57,56 +89,11 @@ public class GraphDAO {
                     }
                 }
                 if (!targets.isEmpty()) {
-                    inferredGraph.addLink(source, targets, propertyNames);
+                    graph.addInferredLink(source, targets, propertyNames);
                 }
             }
         }
-        //Asserted Graph
-        Graph assertedGraph = new Graph();
-        //Load Asserted Nodes
-        Set<OWLNamedIndividual> assertedIndividuals = OntologyDAO.getInstance().getInferredOntology().getIndividualsInSignature();
-        for (OWLNamedIndividual individual : assertedIndividuals) {
-            Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getInferredOntology());
-            if (!types.isEmpty()) {
-                String name = individual.getIRI().getFragment();
-                String type = types.toString();
-                type = filterUrl(type);
-                assertedGraph.addNode(new Node(name, type));
-            }
-        }
-        //Load Asserted Lnks
-        for (OWLNamedIndividual individual : assertedIndividuals) {
-            Set<OWLClassExpression> types = individual.getTypes(OntologyDAO.getInstance().getAssertedOntology());
-            if (!types.isEmpty()) {
-                String name = individual.getIRI().getFragment();
-                String type = types.toString();
-                type = filterUrl(type);
-                Node source = new Node(name, type);
-                ArrayList<Node> targets = new ArrayList<>();
-                ArrayList<String> propertyNames = new ArrayList<>();
-                Map<OWLObjectPropertyExpression, Set<OWLIndividual>> individualMap = individual.getObjectPropertyValues(OntologyDAO.getInstance().getAssertedOntology());
-                Set<OWLObjectPropertyExpression> propertiesSet = individualMap.keySet();
-                for (OWLObjectPropertyExpression property : propertiesSet) {
-                    String propertyName = property.toString();
-                    propertyName = filterUrl(propertyName);
-                    Set<OWLIndividual> individualSet = individualMap.get(property);
-                    for (OWLIndividual individualProperty : individualSet) {
-                        Set<OWLClassExpression> targetTypes = individualProperty.getTypes(OntologyDAO.getInstance().getAssertedOntology());
-                        if (!targetTypes.isEmpty()) {
-                            String targetName = individualProperty.asOWLNamedIndividual().getIRI().getFragment();
-                            String targetType = targetTypes.toString();
-                            targetType = filterUrl(targetType);
-                            targets.add(new Node(targetName, targetType));
-                            propertyNames.add(propertyName);
-                        }
-                    }
-                }
-                if (!targets.isEmpty()) {
-                    inferredGraph.assertLinks(source, targets, propertyNames);
-                }
-            }
-        }
-        inferredGraph.checkPaths();        
+        graph.checkPaths();
     }
 
     public static GraphDAO getInstance() {
@@ -114,7 +101,7 @@ public class GraphDAO {
     }
 
     public Graph readGraph() {
-        return inferredGraph;
+        return graph;
     }
 
     private String filterUrl(String url) {

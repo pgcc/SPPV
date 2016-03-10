@@ -7,12 +7,12 @@ header{
     padding-bottom: 1em;
 }
 main{
-    float: left;
-}
-aside{
     float: right;
 }
-//------------------------------------------------------------------------------
+aside{
+    float: left;
+}
+/*---------- jQuery widget CSS -----------------------------------------------*/
 .demoHeaders {
     margin-top: 2em;
 }
@@ -50,11 +50,26 @@ aside{
 select {
     width: 200px;
 }
+/*---------- Auto-complete select --------------------------------------------*/
+.custom-combobox {
+    position: relative;
+    display: inline-block;
+  }
+  .custom-combobox-toggle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin-left: -1px;
+    padding: 0;
+  }
+  .custom-combobox-input {
+    margin: 0;
+    padding: 5px 10px;
+  }
 /*----------------------------------------------------------------------------*/
 .filters{
     text-align: center;
     border: 1px solid #cccccc;
-    //float: left;
     padding: 0.5em;
     background-color: #eeeeee;
     margin: 0.5em;
@@ -76,65 +91,54 @@ select {
     width: 960px;
     float: left;
 }
-path.asserted {
+#filterTable{
+    text-align: left;
+}
+/* ---------- GRAPH ELEMENTS DEFINITIONS */
+line.asserted {
     fill: none;
     stroke: #000;
+    stroke-opacity: .8;
 }
-path.inferred {
+line.inferred {
     fill: none;
     stroke: #f00;
+    stroke-opacity: .8;
 }
-path.both {
+line.both {
     fill: none;
     stroke: #aa0;
-}
-path.size1{
-    stroke-width: 1px;
-}
-path.size2{
-    stroke-width: 2px;
-}
-path.size3{
-    stroke-width: 3px;
-}
-marker#inferred{
-    fill: #f00;
-}
-marker#asserted{
-    fill: #000;
-}
-marker#both{
-    fill: #aa0;
+    stroke-opacity: .8;
 }
 text {
     font: 10px sans-serif;
     pointer-events: none;
     text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
 }
-#nodeTip, #linkTip{
+/* ---------- TIP BOX DEFINITIONS */
+#nodeTip, #pathTip{
     position: absolute;
-    border: 1px solid #cccccc;                          
-    padding: 0.8em;             
-    font-size: 1.2em;
+    border: 1px solid #cccccc;
+    padding: 0.8em;
     text-align: center;
-    background-color: #eeeeee;   
-    border-radius: 2px;           
+    background-color: #eeeeee;
+    border-radius: 2px;
     pointer-events: none;
 }
 table.tableTip{
     border-collapse: collapse;
     width: 100%;
 }
-th, td {
+.tableTip th, .tableTip td {
     padding: 8px;
 }
-td.inftrue{
+.tableTip td.inftrue{
     color: red;
 }
-th {
+.tableTip th {
     background-color: #444;
     color: white;
 }
-tr:nth-child(even){
+.tableTip tr:nth-child(even){
     background-color: #f2f2f2
 }

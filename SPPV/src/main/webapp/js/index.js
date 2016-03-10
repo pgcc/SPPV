@@ -1,42 +1,91 @@
 $(window).resize(function () {
-    var width = $(window).width() - (88 + $("aside").width());
-    var height = $(window).height() - ($("header").height() + 40);
+        var width = $(window).width() - (88 + $("aside").width());
+        var height = $(window).height() - ($("header").height() + 40);
 
-    $("#graph").width(width)
-            .height(height);
+        $("#graph").width(width)
+                .height(height);
 
-    d3.select("svg")
-            .attr("width", width)
-            .attr("height", height);
+        $("aside").width(250);
+
+        d3.select("svg")
+                .attr("width", width)
+                .attr("height", height);
 });
 
 $(document).ready(function () {
 
     var nodeTip = d3.select("#nodeTip")
             .style("opacity", 0);
-    var linkTip = d3.select("#linkTip")
+    var pathTip = d3.select("#pathTip")
             .style("opacity", 0);
 
+    //Auxiliar Tip functions
     function writeNodeTip(node) {
         $("#tipNodeName").html(node.name);
         $("#tipNodeType").html(node.type);
-        nodeTip.style("left", (d3.event.pageX + 20) + "px")
-                .style("top", (d3.event.pageY - 20) + "px");
+        
+        //Calculating the node tip position
+        var width = $(window).width();
+        var posX = d3.event.pageX;
+        if ($("#nodeTip").width() + posX + 40 > width) {
+            posX -= ($("#nodeTip").width() + 20);
+        } else {
+            posX += 20;
+        }
+        var height = $(window).height();
+        var posY = d3.event.pageY;
+        if ($("#nodeTip").height() + posY + 80> height) {
+            posY -= $("#nodeTip").height();
+        } else {
+            posY -= 20;
+        }     
+               
+        nodeTip.style("left", posX + "px")
+                .style("top", posY + "px");
     }
 
-    function writeLinkTip(path) {
-        var list = "<tr><th>Link</th><th>Type</th></tr>";
+    function writePathTip(path) {
+        pathTip.style("left", "0px")
+                .style("top", "0px");
+        
+        var list = "<tr><th>Link</th><th>Sense</th><th>Type</th></tr>";
         for (l in path.links) {
-            list += "<tr><td>" + path.links[l].name + "</td>"
-                    + "<td class=\"inf" + path.links[l].inferred + "\">"
-                    + path.links[l].inferred + "</td></tr>";
+            list += "<tr><td>" + path.links[l].name + "</td>";
+            if (path.links[l].sense) {
+                list += "<td class=\"bigfont\">&#8702;</td>";
+            } else {
+                list += "<td>&#8701;</td>";
+            }
+            list += "<td class=\"inf" + path.links[l].inferred + "\">";
+            if (path.links[l].inferred) {
+                list += "Inferred</td></tr>";
+            } else {
+                list += "Asserted</td></tr>";
+            }
         }
         list += "</table>";
         $("#tipLinkType").html(list);
         $("#tipSourceName").html(path.source.name);
         $("#tipTargetName").html(path.target.name);
-        linkTip.style("left", (d3.event.pageX + 30) + "px")
-                .style("top", (d3.event.pageY - 30) + "px");
+
+        //Calculating the path tip position
+        var width = $(window).width();
+        var posX = d3.event.pageX;
+        if ($("#pathTip").width() + posX + 60 > width) {
+            posX -= ($("#pathTip").width() + 30);
+        } else {
+            posX += 30;
+        }
+        var height = $(window).height();
+        var posY = d3.event.pageY;
+        if ($("#pathTip").height() + posY > height) {
+            posY -= $("#pathTip").height();
+        } else {
+            posY -= 30;
+        }
+
+        pathTip.style("left", posX + "px")
+                .style("top", posY + "px");
     }
 
     var svg = d3.select("#graph")
@@ -50,6 +99,7 @@ $(document).ready(function () {
         var height = $("#graph").height();
         var graph = json;
 
+        //D3 definittions
         var force = d3.layout.force()
                 .charge(-300)
                 .linkDistance(80)
@@ -60,47 +110,23 @@ $(document).ready(function () {
                 .links(graph.paths)
                 .start();
 
-        //Defines the arrow for the links
-        svg.append("defs").selectAll("marker")
-                .data(["inferred", "asserted", "both"])
-                .enter().append("marker")
-                .attr("id", function (d) {
-                    return d;
-                })
-                .attr("viewBox", "0 -5 10 10")
-                .attr("refX", 22)
-                .attr("refY", -2)
-                .attr("markerWidth", 6)
-                .attr("markerHeight", 6)
-                .attr("orient", "auto")
-                .append("path")
-                .attr("d", "M0,-5L10,0L0,5");
-
-        var path = svg.selectAll("path")
+        var path = svg.selectAll(".path")
                 .data(graph.paths)
-                .enter().append("path")
+                .enter().append("line")
                 .attr("class", function (p) {
-                    var pathClass = p.type;
+                    var pathClass = "path " + p.type;
                     pathClass += " s" + p.source.index + " t" + p.target.index;
-                    if (p.links.length <= 1) {
-                        pathClass += " size1";
-                    } else if (p.links.length <= 2) {
-                        pathClass += " size2";
-                    } else {
-                        pathClass += " size3";
-                    }
                     return pathClass;
                 })
-                .on("mouseout", function () {
-                    linkTip.style("opacity", 0);
-                })
                 .on("click", function (p) {
-                    writeLinkTip(p);
-                    linkTip.style("opacity", 0.9);
-
+                    writePathTip(p);
+                    pathTip.style("opacity", 0.9);
                 })
-                .attr("marker-end", function (p) {
-                    return "url(#" + p.type + ")";
+                .on("mouseout", function (p) {
+                    pathTip.style("opacity", 0);
+                })
+                .style("stroke-width", function (p) {
+                    return p.links.length * 1.5;
                 });
 
         var node = svg.selectAll("image")
@@ -115,28 +141,12 @@ $(document).ready(function () {
                 })
                 .attr("width", "24")
                 .attr("height", "24")
-                .on("mouseover", function (n) {
-                    setOpacity(0.1);
-                    d3.select("#node" + n.index).style("opacity", 1.0);
-                    d3.select("#name" + n.index).style("opacity", 1.0);
-                    d3.selectAll(".s" + n.index).each(function (p) {
-                        d3.select(this).style("opacity", 1.0);
-                        d3.select("#node" + p.target.index).style("opacity", 1.0);
-                        d3.select("#name" + p.target.index).style("opacity", 1.0);
-                    });
-                    d3.selectAll(".t" + n.index).each(function (p) {
-                        d3.select(this).style("opacity", 1.0);
-                        d3.select("#node" + p.source.index).style("opacity", 1.0);
-                        d3.select("#name" + p.source.index).style("opacity", 1.0);
-                    });
-                })
-                .on("mouseout", function () {
-                    setOpacity(1.0);
-                    nodeTip.style("opacity", 0);
-                })
                 .on("click", function (n) {
                     writeNodeTip(n);
                     nodeTip.style("opacity", 0.9);
+                })
+                .on("mouseout", function () {
+                    nodeTip.style("opacity", 0);
                 })
                 .call(force.drag);
 
@@ -167,12 +177,6 @@ $(document).ready(function () {
                     })
                     .attr("y2", function (d) {
                         return d.target.y;
-                    })
-                    .attr("d", function (d) {
-                        var dx = d.target.x - d.source.x,
-                                dy = d.target.y - d.source.y,
-                                dr = Math.sqrt(dx * dx + dy * dy);
-                        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
                     });
 
             node.attr("x", function (d) {
@@ -191,10 +195,11 @@ $(document).ready(function () {
 
         });
 
-        function setOpacity(value) {
-            node.style("opacity", value);
-            path.style("opacity", value);
-            nodeName.style("opacity", value);
+        for (var n in graph.nodes) {
+            $("#nodeA").append("<option value=\"" + n + "\" data-class=\"" +
+                    graph.nodes[n].type + "\">" + graph.nodes[n].name + "</option>");
+            $("#nodeB").append("<option value=\"" + n + "\" data-class=\"" +
+                    graph.nodes[n].type + "\">" + graph.nodes[n].name + "</option>");
         }
 
     }, "json");

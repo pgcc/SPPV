@@ -12,12 +12,8 @@ public class Path {
     public Path(Integer source, Integer target) {
         this.source = source;
         this.target = target;
+        this.type = "asserted";
         this.links = new ArrayList<>();
-    }
-    public Path(Integer source, Integer target, ArrayList<Link> links) {
-        this.source = source;
-        this.target = target;
-        this.links = links;
     }
 
     public Integer getSource() {
@@ -43,38 +39,41 @@ public class Path {
     public void setLinks(ArrayList<Link> links) {
         this.links = links;
     }
-    
-    public void addLink(Link link){
+
+    public void addLink(Link link) {
         this.links.add(link);
     }
 
-    public void assertLink(String name) {
-        for(Link link : links){
-            if(link.getName().equals(name)){
-                link.setInferred(false);
+    public void addInferredLink(Link newLink) {
+        boolean exist = false;
+        for (Link link : links) {
+            if (newLink.sameAs(link)) {
+                exist = true;
+                break;
             }
+        }
+        if (!exist) {
+            links.add(newLink);
         }
     }
-    
-    public void checkType(){
-        String type = "";
-        for(Link link : links){
-            if(link.getInferred()){
-                if(type.equals("")){
-                    type = "inferred";
-                }else if(type.equals("asserted")){
-                    type = "both";
-                    break;
-                }                    
-            }else{
-                if(type.equals("")){
-                    type = "asserted";
-                }else if(type.equals("inferred")){
-                    type = "both";
+
+    public void checkType() {
+        String newType = "";
+        for (Link link : links) {
+            if (link.getInferred()) {
+                if (newType.equals("")) {
+                    newType = "inferred";
+                } else if (newType.equals("asserted")) {
+                    newType = "both";
                     break;
                 }
+            } else if (newType.equals("")) {
+                newType = "asserted";
+            } else if (newType.equals("inferred")) {
+                newType = "both";
+                break;
             }
         }
-        this.type = type;
+        this.type = newType;
     }
 }

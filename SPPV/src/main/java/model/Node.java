@@ -27,7 +27,7 @@ public class Node {
     }
 
     boolean sameAs(Node target) {
-        return name.equalsIgnoreCase(target.getName()) && type.equalsIgnoreCase(target.getType());
+        return name.equalsIgnoreCase(target.getName());
     }
 
 }
