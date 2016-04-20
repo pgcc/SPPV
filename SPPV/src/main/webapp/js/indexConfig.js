@@ -110,12 +110,15 @@ $(document).ready(function () {
                     d3.select("#node" + p.source.index).style("opacity", 1.0);
                     d3.select("#name" + p.source.index).style("opacity", 1.0);
                 });
+                $("#hideFilterNodeActive").val("true");
             });
 
     $("#showAll")
             .click(function (event) {
                 event.preventDefault();
                 setOpacity(1.0);
+                $("#hideFilterNodeActive").val("false");
+                $("span input").val("");
             });
 
     function setOpacity(value) {

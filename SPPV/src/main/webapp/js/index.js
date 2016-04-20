@@ -1,15 +1,15 @@
 $(window).resize(function () {
-        var width = $(window).width() - (88 + $("aside").width());
-        var height = $(window).height() - ($("header").height() + 40);
+    var width = $(window).width() - (88 + $("aside").width());
+    var height = $(window).height() - ($("header").height() + 40);
 
-        $("#graph").width(width)
-                .height(height);
+    $("#graph").width(width)
+            .height(height);
 
-        $("aside").width(250);
+    $("aside").width(250);
 
-        d3.select("svg")
-                .attr("width", width)
-                .attr("height", height);
+    d3.select("svg")
+            .attr("width", width)
+            .attr("height", height);
 });
 
 $(document).ready(function () {
@@ -23,7 +23,7 @@ $(document).ready(function () {
     function writeNodeTip(node) {
         $("#tipNodeName").html(node.name);
         $("#tipNodeType").html(node.type);
-        
+
         //Calculating the node tip position
         var width = $(window).width();
         var posX = d3.event.pageX;
@@ -34,12 +34,12 @@ $(document).ready(function () {
         }
         var height = $(window).height();
         var posY = d3.event.pageY;
-        if ($("#nodeTip").height() + posY + 80> height) {
+        if ($("#nodeTip").height() + posY + 80 > height) {
             posY -= $("#nodeTip").height();
         } else {
             posY -= 20;
-        }     
-               
+        }
+
         nodeTip.style("left", posX + "px")
                 .style("top", posY + "px");
     }
@@ -47,7 +47,7 @@ $(document).ready(function () {
     function writePathTip(path) {
         pathTip.style("left", "0px")
                 .style("top", "0px");
-        
+
         var list = "<tr><th>Link</th><th>Sense</th><th>Type</th></tr>";
         for (l in path.links) {
             list += "<tr><td>" + path.links[l].name + "</td>";
@@ -147,6 +147,26 @@ $(document).ready(function () {
                 })
                 .on("mouseout", function () {
                     nodeTip.style("opacity", 0);
+                    if ($("#hideFilterNodeActive").val() === "false") {
+                        setOpacity(1.0);
+                    }
+                })
+                .on("mouseover", function (n) {
+                    if ($("#hideFilterNodeActive").val() === "false") {
+                        setOpacity(0.1);
+                        d3.select(this).style("opacity", 1.0);
+                        d3.select("#name" + n.index).style("opacity", 1.0);
+                        d3.selectAll(".s" + n.index).each(function (p) {
+                            d3.select(this).style("opacity", 1.0);
+                            d3.select("#node" + p.target.index).style("opacity", 1.0);
+                            d3.select("#name" + p.target.index).style("opacity", 1.0);
+                        });
+                        d3.selectAll(".t" + n.index).each(function (p) {
+                            d3.select(this).style("opacity", 1.0);
+                            d3.select("#node" + p.source.index).style("opacity", 1.0);
+                            d3.select("#name" + p.source.index).style("opacity", 1.0);
+                        });
+                    }
                 })
                 .call(force.drag);
 
@@ -204,4 +224,9 @@ $(document).ready(function () {
 
     }, "json");
 
+    function setOpacity(value) {
+        d3.selectAll("image").style("opacity", value);
+        d3.selectAll(".path").style("opacity", value);
+        d3.selectAll("text").style("opacity", value);
+    }
 });
