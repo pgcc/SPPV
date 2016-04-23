@@ -1,3 +1,20 @@
+function calcBrightness(index) {
+    var connections = 0;
+    d3.selectAll(".s" + index).each(function () {
+        connections++;
+    });
+    d3.selectAll(".t" + index).each(function () {
+        connections++;
+    });
+    if (connections >= 4) {
+        return "3.png";
+    } else if (connections >= 2) {
+       return "2.png";
+    } else {
+        return "1.png";
+    }
+}
+
 $(document).ready(function () {
 
     //---------- Creating the jQuery-UI widgets
@@ -16,33 +33,35 @@ $(document).ready(function () {
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
                     $("#taskNameLabel").html("Activities");
-                    return "./images/activity.png";
+                    return "./images/activity" + calcBrightness(node.index);
                 } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
                     $("#actorNameLabel").html("Agents");
-                    return "./images/agent.png";
+                    return "./images/agent" + calcBrightness(node.index);
                 } else {
                     $("#entityNameLabel").html("Entities");
-                    return "./images/entity.png";
+                    return "./images/entity" + calcBrightness(node.index);
                 }
             });
         } else if (this.value === "bpmn") {
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
                     $("#taskNameLabel").html("Task");
-                    return "./images/task.png";
+                    return "./images/task" + calcBrightness(node.index);
                 } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
                     $("#actorNameLabel").html("Actors");
-                    return "./images/actor.png";
+                    return "./images/actor" + calcBrightness(node.index);
                 } else {
                     $("#entityNameLabel").html("Data Objects");
-                    return "./images/data.png";
+                    return "./images/data" + calcBrightness(node.index);
                 }
             });
         } else {
             $("#taskNameLabel").html("Tasks/Activities");
             $("#actorNameLabel").html("Actors/Agents");
             $("#entityNameLabel").html("Data Object/Entities");
-            images.attr("xlink:href", "./images/circle.png");
+            images.attr("xlink:href", function (node) {
+                return "./images/circle" + calcBrightness(node.index);
+            });
         }
     });
 

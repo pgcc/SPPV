@@ -126,7 +126,12 @@ $(document).ready(function () {
                     pathTip.style("opacity", 0);
                 })
                 .style("stroke-width", function (p) {
-                    return p.links.length * 1.5;
+                    if (p.links.length >= 4)
+                        return 4;
+                    else if (p.links.length >= 2)
+                        return 3;
+                    else
+                        return 2;
                 });
 
         var node = svg.selectAll("image")
@@ -135,7 +140,23 @@ $(document).ready(function () {
                 .attr("class", function (n) {
                     return n.type;
                 })
-                .attr("xlink:href", "./images/circle.png")
+                .attr("xlink:href", function (n) {
+                    var connections = 0;
+                    var imagePath = "./images/circle";
+                    d3.selectAll(".s" + n.index).each(function (p) {
+                        connections++;
+                    });
+                    d3.selectAll(".t" + n.index).each(function (p) {
+                        connections++;
+                    });
+                    if (connections >= 4)
+                        imagePath += "3.png";
+                    else if (connections >= 2)
+                        imagePath += "2.png";
+                    else
+                        imagePath += "1.png";
+                    return imagePath;
+                })
                 .attr("id", function (n) {
                     return "node" + n.index;
                 })
