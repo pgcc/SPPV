@@ -14,6 +14,8 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
+    var startTime = Date.now();
+
     var nodeTip = d3.select("#nodeTip")
             .style("opacity", 0);
     var pathTip = d3.select("#pathTip")
@@ -243,11 +245,19 @@ $(document).ready(function () {
                     graph.nodes[n].type + "\">" + graph.nodes[n].name + "</option>");
         }
 
+        renderTime(Date.now() - startTime);
+
     }, "json");
 
     function setOpacity(value) {
         d3.selectAll("image").style("opacity", value);
         d3.selectAll(".path").style("opacity", value);
         d3.selectAll("text").style("opacity", value);
+    }
+
+    function renderTime(ms) {
+        var s = ms / 1000;
+        $("#timeRendering").html(s + " s");
+
     }
 });

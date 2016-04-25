@@ -79,6 +79,12 @@ select {
     font: 1em initial;
     margin-bottom: 0.5em
 }
+.fl{
+    float: left;
+}
+.fr{
+    float: right;
+}
 .codeLike{
     color: #666;
     font-weight: bold;
