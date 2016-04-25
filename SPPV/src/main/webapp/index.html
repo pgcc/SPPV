@@ -36,31 +36,54 @@
                 </div>
                 <h2 class="demoHeaders">Filter Options</h2>
                 <div class="filters">
-                    <span class="filterTitle">Hide/Show Names</span>
-                    <table id="filterTable">
+                    <span class="filterTitle">Filter Icons and Names</span>
+                    <table>
                         <tbody>
                             <tr>
-                                <td><input type="checkbox" name="allNames" id="allNames" checked></td>
-                                <td><label for="allNames">All Names</label></td>
+                                <td colspan="2"><div>All Names</div></td>
+                                <td>
+                                    <div id="allFilter" class="fr">
+                                        <input type="checkbox" id="allIcons" value="allIcons" checked><label for="allIcons">Icons</label>
+                                        <input type="checkbox" id="allNames" value="allNames" checked><label for="allNames">Names</label>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" name="actorName" id="actorName" checked></td>
-                                <td><label for="actorName" id="actorNameLabel">Agents</label></td>
+                                <td><img id="actorImage" src="images/agent3.png" alt="Agent" width="24"></td>
+                                <td><div id="actorNameLabel">Agents</div></td>
+                                <td>
+                                    <div id="agentFilter" class="fr">
+                                        <input type="checkbox" id="agentIcon" value="agentIcon" checked><label for="agentIcon">Icons</label>
+                                        <input type="checkbox" id="agentName" value="agentName" checked><label for="agentName">Names</label>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" name="taskName" id="taskName" checked></td>
-                                <td><label for="taskName" id="taskNameLabel">Activities</label></td>
+                                <td><img id="taskImage" src="images/activity3.png" alt="Activity" width="24"></td>
+                                <td><div id="taskNameLabel">Activities</div></td>
+                                <td>
+                                    <div id="activityFilter">
+                                        <input type="checkbox" id="activityIcon" value="activityIcon" checked><label for="activityIcon">Icons</label>
+                                        <input type="checkbox" id="activityName" value="activityName" checked><label for="activityName">Names</label>
+                                    </div>
+                                </td>
                             </tr>
                             <tr>
-                                <td><input type="checkbox" name="entityName" id="entityName" checked></td>
-                                <td><label for="entityName" id="entityNameLabel">Entities</label></td>
+                                <td><img id="entityImage" src="images/entity3.png" alt="Entity" width="24"></td>
+                                <td><div id="entityNameLabel">Entities</div></td>
+                                <td>
+                                    <div id="entityFilter">
+                                        <input type="checkbox" id="entityIcon" value="entityIcon" checked><label for="entityIcon">Icons</label>
+                                        <input type="checkbox" id="entityName" value="entityName" checked><label for="entityName">Names</label>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
-                    </table>     
+                    </table>
                 </div>
                 <div class="filters">
                     <input type="hidden" id="hideFilterNodeActive" value="false">
-                    <span class="filterTitle">Hide Nodes</span>
+                    <span class="filterTitle">Filter Nodes</span>
                     <div class="ui-widget">
                         <label for="nodeA">Select a node:</label>
                         <br>
@@ -76,7 +99,7 @@
                         </select>
                     </div>
                     <br>
-                    <button id="filterNodes">Filter nodes</button><button id="showAll">Show all nodes</button>
+                    <button id="filterNodes">Filter</button><button id="showAll">Show all</button>
                 </div>
             </form>
         </aside>

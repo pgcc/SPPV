@@ -54,18 +54,18 @@ select {
 .custom-combobox {
     position: relative;
     display: inline-block;
-  }
-  .custom-combobox-toggle {
+}
+.custom-combobox-toggle {
     position: absolute;
     top: 0;
     bottom: 0;
     margin-left: -1px;
     padding: 0;
-  }
-  .custom-combobox-input {
+}
+.custom-combobox-input {
     margin: 0;
     padding: 5px 10px;
-  }
+}
 /*----------------------------------------------------------------------------*/
 .filters{
     text-align: center;
@@ -79,11 +79,26 @@ select {
     font: 1em initial;
     margin-bottom: 0.5em
 }
+#allFilter{
+    
+}
+#entityNameLabel{
+    vertical-align: middle;
+}
+#agentFilter{
+    vertical-align: middle;
+}
+#entityFilter{
+    vertical-align: middle;
+}
 .fl{
     float: left;
 }
 .fr{
     float: right;
+}
+img{
+    float: left;
 }
 .codeLike{
     color: #666;
