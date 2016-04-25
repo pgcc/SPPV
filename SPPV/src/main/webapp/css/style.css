@@ -91,15 +91,6 @@ select {
 #entityFilter{
     vertical-align: middle;
 }
-.fl{
-    float: left;
-}
-.fr{
-    float: right;
-}
-img{
-    float: left;
-}
 .codeLike{
     color: #666;
     font-weight: bold;
