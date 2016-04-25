@@ -143,21 +143,16 @@ $(document).ready(function () {
                     return n.type;
                 })
                 .attr("xlink:href", function (n) {
-                    var connections = 0;
-                    var imagePath = "./images/circle";
-                    d3.selectAll(".s" + n.index).each(function (p) {
-                        connections++;
-                    });
-                    d3.selectAll(".t" + n.index).each(function (p) {
-                        connections++;
-                    });
-                    if (connections >= 4)
-                        imagePath += "3.png";
-                    else if (connections >= 2)
-                        imagePath += "2.png";
-                    else
-                        imagePath += "1.png";
-                    return imagePath;
+                    if (n.type === "Activity") {
+                    $("#taskNameLabel").html("Activities");
+                    return "./images/activity" + calcBrightness(n.index);
+                } else if (n.type === "Person" || n.type === "Agent" || n.type === "Organization" || n.type === "SoftwareAgent") {
+                    $("#actorNameLabel").html("Agents");
+                    return "./images/agent" + calcBrightness(n.index);
+                } else {
+                    $("#entityNameLabel").html("Entities");
+                    return "./images/entity" + calcBrightness(n.index);
+                }
                 })
                 .attr("id", function (n) {
                     return "node" + n.index;
@@ -259,5 +254,22 @@ $(document).ready(function () {
         var s = ms / 1000;
         $("#timeRendering").html(s + " s");
 
+    }
+
+    function calcBrightness(index) {
+        var connections = 0;
+        d3.selectAll(".s" + index).each(function () {
+            connections++;
+        });
+        d3.selectAll(".t" + index).each(function () {
+            connections++;
+        });
+        if (connections >= 4) {
+            return "3.png";
+        } else if (connections >= 2) {
+            return "2.png";
+        } else {
+            return "1.png";
+        }
     }
 });

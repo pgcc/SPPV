@@ -55,13 +55,6 @@ $(document).ready(function () {
                     return "./images/data" + calcBrightness(node.index);
                 }
             });
-        } else {
-            $("#taskNameLabel").html("Tasks/Activities");
-            $("#actorNameLabel").html("Actors/Agents");
-            $("#entityNameLabel").html("Data Object/Entities");
-            images.attr("xlink:href", function (node) {
-                return "./images/circle" + calcBrightness(node.index);
-            });
         }
     });
 
