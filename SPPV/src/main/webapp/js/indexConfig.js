@@ -26,10 +26,29 @@ $(document).ready(function () {
     $("#agentFilter").buttonset();
     $("#activityFilter").buttonset();
     $("#entityFilter").buttonset();
+    $("#visOptions").buttonset();
     //---------- Loading the Path
     $.post("FrontController?action=ReadOWLPath", function (string) {
         $("#owlPath").html(string);
     }, "text");
+    //---------- Function of Visualization Option
+    $("input[type=radio][name=visOptions]").change(function () {
+        if (this.value === "flowLayout") {
+            //$("#RadioChartVis").children().hide();
+            $("#chartVis").hide();
+            $("#graphVis").hide();
+            $("#flowVis").show();
+        } else if (this.value === "chartsLayout") {
+            $("#flowVis").hide();
+            $("#graphVis").hide();
+            $("#chartVis").show();
+        } else if (this.value === "graphLayout") {
+            $("#flowVis").hide();
+            $("#chartVis").hide();
+            $(window).resize();
+            $("#graphVis").show();
+        }
+    });
     //---------- Function of Display Options widget
     $("input[type=radio][name=icon]").change(function () {
         var images = d3.selectAll("image");
@@ -72,41 +91,91 @@ $(document).ready(function () {
         }
     });
     //---------- Function of Filter Options widget
-    $("input[type=checkbox][id=allNames]").change(function () {
-        if ($("input[type=checkbox][id=allNames]").prop("checked")) {
-            $("input[type=checkbox][id=agentName]").prop("checked", true);
-            $("input[type=checkbox][id=activityName]").prop("checked", true);
-            $("input[type=checkbox][id=entityName]").prop("checked", true);
+    $("#allNames").change(function () {
+        if ($("#allNames").prop("checked")) {
+            $("#agentName").prop("checked", true);
+            $("#agentName+label").addClass("ui-state-active");
+            $("#activityName").prop("checked", true);
+            $("#activityName+label").addClass("ui-state-active");
+            $("#entityName").prop("checked", true);
+            $("#entityName+label").addClass("ui-state-active");
             $("text").fadeIn();
         } else {
-            $("input[type=checkbox][id=agentName]").prop("checked", false);
-            $("input[type=checkbox][id=activityName]").prop("checked", false);
-            $("input[type=checkbox][id=entityName]").prop("checked", false);
+            $("#agentName").prop("checked", false);
+            $("#agentName+label").removeClass("ui-state-active");
+            $("#activityName").prop("checked", false);
+            $("#activityName+label").removeClass("ui-state-active");
+            $("#entityName").prop("checked", false);
+            $("#entityName+label").removeClass("ui-state-active");
             $("text").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=agentName]").change(function () {
-        if ($("input[type=checkbox][id=agentName]").prop("checked")) {
+    $("#agentName").change(function () {
+        if ($("#agentName").prop("checked")) {
             $("text.PersonName").fadeIn();
         } else {
             $("text.PersonName").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=activityName]").change(function () {
-        if ($("input[type=checkbox][id=activityName]").prop("checked")) {
+    $("#activityName").change(function () {
+        if ($("#activityName").prop("checked")) {
             $("text.ActivityName").fadeIn();
         } else {
             $("text.ActivityName").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=entityName]").change(function () {
-        if ($("input[type=checkbox][id=entityName]").prop("checked")) {
+    $("#entityName").change(function () {
+        if ($("#entityName").prop("checked")) {
             $("text.EntityName").fadeIn();
         } else {
             $("text.EntityName").fadeOut();
+        }
+    });
+
+    $("#allIcons").change(function () {
+        if ($("#allIcons").prop("checked")) {
+            $("#agentIcon").prop("checked", true);
+            $("#agentIcon+label").addClass("ui-state-active");
+            $("#activityIcon").prop("checked", true);
+            $("#activityIcon+label").addClass("ui-state-active");
+            $("#entityIcon").prop("checked", true);
+            $("#entityIcon+label").addClass("ui-state-active");
+            $("text").fadeIn();
+        } else {
+            $("#agentIcon").prop("checked", false);
+            $("#agentIcon+label").removeClass("ui-state-active");
+            $("#activityIcon").prop("checked", false);
+            $("#activityIcon+label").removeClass("ui-state-active");
+            $("#entityIcon").prop("checked", false);
+            $("#entityIcon+label").removeClass("ui-state-active");
+            $("text").fadeOut();
+        }
+    });
+
+    $("#agentIcon").change(function () {
+        if ($("#agentIcon").prop("checked")) {
+            $("text.PersonIcon").fadeIn();
+        } else {
+            $("text.PersonIcon").fadeOut();
+        }
+    });
+
+    $("#activityIcon").change(function () {
+        if ($("#activityIcon").prop("checked")) {
+            $("text.ActivityIcon").fadeIn();
+        } else {
+            $("text.ActivityIcon").fadeOut();
+        }
+    });
+
+    $("#entityIcon").change(function () {
+        if ($("#entityIcon").prop("checked")) {
+            $("text.EntityIcon").fadeIn();
+        } else {
+            $("text.EntityIcon").fadeOut();
         }
     });
     //---------- Function of Filter Nodes widget
