@@ -11,131 +11,154 @@
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery-ui.custom-combobox.js"></script>
     <script src="js/d3.js"></script>
-    <script src="js/indexTest.js"></script>
+    <script src="js/calculus.js"></script>
+    <script src="js/index.js"></script>
     <script src="js/indexConfig.js"></script>
 
     <div id="config">
         <header>
-            <a href="test.html"><h1>Provenance Ontology</h1></a>
+            <h1>Provenance Ontology</h1>
             <div>
-                <form method="post" enctype="multipart/form-data" action="FrontController?action=FileUpload">
-                    <input type="file" name="upfile" id="upfile"> <input type="submit" value="Upload File">
-                </form>
-            </div>
-            <div>
-            <div>
-                Ontology: <span class="codeLike" id="owlPath"></span><br>
-                Rendering Time: <span id="timeRendering">00:00</span>
-            </div>
-            <div id="visOptions">
-                <input type="radio" id="flowLayout" name="visOptions" value="flowLayout" checked><label for="flowLayout">Dataflow Visualization</label>
-                <input type="radio" id="chartsLayout" name="visOptions" value="chartsLayout"><label for="chartsLayout">Data Chart Visualization</label>
-                <input type="radio" id="graphLayout" name="visOptions" value="graphLayout"><label for="graphLayout">Graph Visualization</label>
-            </div>
+                <div>
+                    Ontology: <span class="codeLike" id="owlPath"></span><br>
+                    Rendering Time: <span id="timeRendering">00:00</span>
+                </div>
+                <div id="visOptions">
+                    <input type="radio" id="flowLayout" name="visOptions" value="flowLayout" checked><label for="flowLayout">Dataflow Visualization</label>
+                    <input type="radio" id="chartsLayout" name="visOptions" value="chartsLayout"><label for="chartsLayout">Data Chart Visualization</label>
+                    <input type="radio" id="graphLayout" name="visOptions" value="graphLayout"><label for="graphLayout">Graph Visualization</label>
+                </div>
         </header>
-            <div id="flowVis">
-                Dataflow Visualization<br>
-            </div>
-            <div id="chartVis">
-                Data Chart Visualization<br>
-                <h4>Local</h4>
-                <table>
-                    <tbody id="calculus">
-                        <tr>
-                            <th>No</th><th>Nome</th><th>Grau</th><th>Centralidade Local</th><th>Closeness</th><th>Betweeness</th>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div id="graphVis">
-                <main>
-                    <div id="graph">
-                    </div>
-                </main>
-                <aside>
-                    <form>
-                        <h2 class="demoHeaders">Display Options</h2>
-                        <div class="filters">
-                            <span>Symbols</span>
-                            <div id="radioset">
-                                <input type="radio" id="prov" name="icon" value="prov" checked><label for="prov">PROV</label>
-                                <input type="radio" id="bpmn" name="icon" value="bpmn"><label for="bpmn">BPMN</label>
-                            </div>
-                        </div>
-                        <h2 class="demoHeaders">Filter Options</h2>
-                        <div class="filters">
-                            <span class="filterTitle">Filter Icons and Names</span>
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2"><div>All Names</div></td>
-                                        <td>
-                                            <div id="allFilter" class="fr">
-                                                <input type="checkbox" id="allIcons" value="allIcons" checked><label for="allIcons">Icons</label>
-                                                <input type="checkbox" id="allNames" value="allNames" checked><label for="allNames">Names</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><img id="actorImage" src="images/agent3.png" alt="Agent" width="24"></td>
-                                        <td><div id="actorNameLabel">Agents</div></td>
-                                        <td>
-                                            <div id="agentFilter" class="fr">
-                                                <input type="checkbox" id="agentIcon" value="agentIcon" checked><label for="agentIcon">Icons</label>
-                                                <input type="checkbox" id="agentName" value="agentName" checked><label for="agentName">Names</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><img id="taskImage" src="images/activity3.png" alt="Activity" width="24"></td>
-                                        <td><div id="taskNameLabel">Activities</div></td>
-                                        <td>
-                                            <div id="activityFilter">
-                                                <input type="checkbox" id="activityIcon" value="activityIcon" checked><label for="activityIcon">Icons</label>
-                                                <input type="checkbox" id="activityName" value="activityName" checked><label for="activityName">Names</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td><img id="entityImage" src="images/entity3.png" alt="Entity" width="24"></td>
-                                        <td><div id="entityNameLabel">Entities</div></td>
-                                        <td>
-                                            <div id="entityFilter">
-                                                <input type="checkbox" id="entityIcon" value="entityIcon" checked><label for="entityIcon">Icons</label>
-                                                <input type="checkbox" id="entityName" value="entityName" checked><label for="entityName">Names</label>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="filters">
-                            <input type="hidden" id="hideFilterNodeActive" value="false">
-                            <span class="filterTitle">Filter Nodes</span>
-                            <div class="ui-widget">
-                                <label for="nodeA">Select a node:</label>
-                                <br>
-                                <select name="nodeA" id="nodeA">
-                                    <option value="">Select a node...</option>
-                                </select>
-                            </div>
-                            <div class="ui-widget">
-                                <label for="nodeB">Select a node:</label>
-                                <br>
-                                <select name="nodeB" id="nodeB">
-                                    <option value="">Select a node...</option>
-                                </select>
-                            </div>
-                            <br>
-                            <button id="filterNodes">Filter</button><button id="showAll">Show all</button>
-                        </div>
-                    </form>
-                </aside>
-            </div>
+        <div id="flowVis">
+            Dataflow Visualization<br>
         </div>
+        <div id="chartVis">
+            Data Chart Visualization<br>
+            <h4>Local</h4>
+            <table>
+                <tbody>
+                    <tr>
+                        <th>NODE</th><th>BEFORE</th><th>AFTER</th>
+                    </tr>
+                    <tr>
+                        <td>Agent</td><td id="agentAmaunt"></td><td id="agentAfter"></td>
+                    </tr>
+                    <tr>
+                        <td>Activity</td><td id="activityAmaunt"></td><td id="activityAfter"></td>
+                    </tr>
+                    <tr>
+                        <td>Entity</td><td id="entityAmaunt"></td><td id="entityAfter"></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td><td id="totalAmaunt"></td><td id="totalAfter"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table>
+                <tbody id="calculus">
+                </tbody>
+            </table>
+        </div>
+        <div id="graphVis">
+            <main>
+                <div id="graph">
+                </div>
+            </main>
+            <aside>
+                <form>
+                    <h2 class="demoHeaders">Display Options</h2>
+                    <div class="filters">
+                        <span>Symbols</span>
+                        <div id="radioset">
+                            <input type="radio" id="prov" name="icon" value="prov" checked><label for="prov">PROV</label>
+                            <input type="radio" id="bpmn" name="icon" value="bpmn"><label for="bpmn">BPMN</label>
+                        </div>
+                    </div>
+                    <h2 class="demoHeaders">Filter Options</h2>
+                    <div class="filters">
+                        <span class="filterTitle">Filter Icons and Names</span>
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td colspan="2"><div>All Names</div></td>
+                                    <td>
+                                        <div id="allFilter" class="fr">
+                                            <input type="checkbox" id="allIcons" value="allIcons" checked><label for="allIcons">Icons</label>
+                                            <input type="checkbox" id="allNames" value="allNames" checked><label for="allNames">Names</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img id="actorImage" src="images/agent3.png" alt="Agent" width="24"></td>
+                                    <td><div id="actorNameLabel">Agents</div></td>
+                                    <td>
+                                        <div id="agentFilter" class="fr">
+                                            <input type="checkbox" id="agentIcon" value="agentIcon" checked><label for="agentIcon">Icons</label>
+                                            <input type="checkbox" id="agentName" value="agentName" checked><label for="agentName">Names</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img id="taskImage" src="images/activity3.png" alt="Activity" width="24"></td>
+                                    <td><div id="taskNameLabel">Activities</div></td>
+                                    <td>
+                                        <div id="activityFilter">
+                                            <input type="checkbox" id="activityIcon" value="activityIcon" checked><label for="activityIcon">Icons</label>
+                                            <input type="checkbox" id="activityName" value="activityName" checked><label for="activityName">Names</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><img id="entityImage" src="images/entity3.png" alt="Entity" width="24"></td>
+                                    <td><div id="entityNameLabel">Entities</div></td>
+                                    <td>
+                                        <div id="entityFilter">
+                                            <input type="checkbox" id="entityIcon" value="entityIcon" checked><label for="entityIcon">Icons</label>
+                                            <input type="checkbox" id="entityName" value="entityName" checked><label for="entityName">Names</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="filters">
+                        <input type="hidden" id="hideFilterNodeActive" value="false">
+                        <span class="filterTitle">Filter Nodes</span>
+                        <div class="ui-widget">
+                            <label for="nodeA">Select a node:</label>
+                            <br>
+                            <select name="nodeA" id="nodeA">
+                                <option value="">Select a node...</option>
+                            </select>
+                        </div>
+                        <div class="ui-widget">
+                            <label for="nodeB">Select a node:</label>
+                            <br>
+                            <select name="nodeB" id="nodeB">
+                                <option value="">Select a node...</option>
+                            </select>
+                        </div>
+                        <br>
+                        <button id="filterNodes">Filter</button><button id="showAll">Show all</button>
+                    </div>
+                </form>
+            </aside>
+        </div>
+    </div>
     <div id="nodeTip">
-        <strong>Type: </strong><span id="tipNodeType"></span><br>
-        <strong>Name: </strong><span id="tipNodeName"></span><br>
+        <table class="tableTip">
+            <tbody>
+                <tr><th>Type</th><th>Name</th></tr>
+                <tr>
+                    <td><span id="tipNodeType"></span></td>
+                    <td><span id="tipNodeName"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="tableTip">
+            <tbody id="tipNodeLinks">
+            </tbody>
+        </table>
     </div>
     <div id="pathTip">
         <table class="tableTip">
