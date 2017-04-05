@@ -54,38 +54,42 @@ $(document).ready(function () {
         var images = d3.selectAll("image");
         if (this.value === "prov") {
             images.attr("xlink:href", function (node) {
+                $("#taskImage").attr("src", "images/Activity.png");
+                $("#actorImage").attr("src", "images/Agent.png");
+                $("#entityImage").attr("src", "images/Entity.png");
                 if (node.type === "Activity") {
                     $("#taskNameLabel").html("Activities");
-                    $("#taskImage").attr("src", "images/activity3.png");
-                    return "./images/activity" + calcBrightness(node.index);
-                } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
+                } else if (node.type === "Agent") {
                     $("#actorNameLabel").html("Agents");
-                    $("#actorImage").attr("src", "images/agent3.png");
-                    return "./images/agent" + calcBrightness(node.index);
-                } else {
+                } else if (node.type === "Entity") {
                     $("#entityNameLabel").html("Entities");
-                    $("#entityImage").attr("src", "images/entity3.png");
                     $("#entityImage").attr("width", "24px");
                     $("#entityImage").attr("height", "");
-                    return "./images/entity" + calcBrightness(node.index);
                 }
+                return "./images/" + node.type + ".png";
             });
         } else if (this.value === "bpmn") {
+            $("#taskImage").attr("src", "images/Task.png");
+            $("#actorImage").attr("src", "images/Actor.png");
+            $("#entityImage").attr("src", "images/Data.png");
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
                     $("#taskNameLabel").html("Task");
-                    $("#taskImage").attr("src", "images/task3.png");
-                    return "./images/task" + calcBrightness(node.index);
-                } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
-                    $("#actorNameLabel").html("Actors");
-                    $("#actorImage").attr("src", "images/actor3.png");
-                    return "./images/actor" + calcBrightness(node.index);
-                } else {
+                    return "./images/Task.png";
+                } else if (node.type === "Agent") {
+                    $("#actorNameLabel").html("Actor");
+                    return "./images/Actor.png";
+                } else if (node.type === "Entity") {
                     $("#entityNameLabel").html("Data Objects");
-                    $("#entityImage").attr("src", "images/data3.png");
                     $("#entityImage").attr("height", "24px");
                     $("#entityImage").attr("width", "");
-                    return "./images/data" + calcBrightness(node.index);
+                    return "./images/Data.png";
+                } else if (node.type === "GroupOfActivities") {
+                    return "./images/GroupOfTasks.png";
+                } else if (node.type === "GroupOfEntities") {
+                    return "./images/GroupOfDatas.png";
+                } else if (node.type === "GroupOfAgents") {
+                    return "./images/GroupOfActors.png";
                 }
             });
         }
@@ -113,25 +117,25 @@ $(document).ready(function () {
 
     $("#agentName").change(function () {
         if ($("#agentName").prop("checked")) {
-            $("text.PersonName").fadeIn();
+            $("text.Agent").fadeIn();
         } else {
-            $("text.PersonName").fadeOut();
+            $("text.Agent").fadeOut();
         }
     });
 
     $("#activityName").change(function () {
         if ($("#activityName").prop("checked")) {
-            $("text.ActivityName").fadeIn();
+            $("text.Activity").fadeIn();
         } else {
-            $("text.ActivityName").fadeOut();
+            $("text.Activity").fadeOut();
         }
     });
 
     $("#entityName").change(function () {
         if ($("#entityName").prop("checked")) {
-            $("text.EntityName").fadeIn();
+            $("text.Entity").fadeIn();
         } else {
-            $("text.EntityName").fadeOut();
+            $("text.Entity").fadeOut();
         }
     });
 
@@ -178,40 +182,7 @@ $(document).ready(function () {
             $("text.EntityIcon").fadeOut();
         }
     });
-    //---------- Function of Filter Nodes widget
-    $("#filterNodes")
-            .click(function (event) {
-                event.preventDefault();
-                setOpacity(0.1);
-                var nA = $("#nodeA").val();
-                var nB = $("#nodeB").val();
-                d3.select("#node" + nA).style("opacity", 1.0);
-                d3.select("#name" + nA).style("opacity", 1.0);
-                d3.selectAll(".s" + nA).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.target.index).style("opacity", 1.0);
-                    d3.select("#name" + p.target.index).style("opacity", 1.0);
-                });
-                d3.selectAll(".t" + nA).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.source.index).style("opacity", 1.0);
-                    d3.select("#name" + p.source.index).style("opacity", 1.0);
-                });
-                d3.select("#node" + nB).style("opacity", 1.0);
-                d3.select("#name" + nB).style("opacity", 1.0);
-                d3.selectAll(".s" + nB).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.target.index).style("opacity", 1.0);
-                    d3.select("#name" + p.target.index).style("opacity", 1.0);
-                });
-                d3.selectAll(".t" + nB).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.source.index).style("opacity", 1.0);
-                    d3.select("#name" + p.source.index).style("opacity", 1.0);
-                });
-                $("#hideFilterNodeActive").val("true");
-            });
-
+    
     $("#showAll")
             .click(function (event) {
                 event.preventDefault();
