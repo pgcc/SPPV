@@ -28,7 +28,7 @@
             "type": "Activity"
         }, {
             "name": "Cliente_1",
-            "type": "Agent"
+            "type": "Person"
         }, {
             "name": "WinconteBase.mdb",
             "type": "Entity"
@@ -52,7 +52,7 @@
             "type": "Activity"
         }, {
             "name": "Suporte_4",
-            "type": "Agent"
+            "type": "Person"
         }, {
             "name": "DLL_-_ERP_Exportação_de_Informações",
             "type": "Entity"
@@ -73,7 +73,7 @@
             "type": "Activity"
         }, {
             "name": "DotNet_5",
-            "type": "Agent"
+            "type": "Person"
         }, {
             "name": "Abertura_da_Requisição_de_Mudança_4",
             "type": "Activity"
@@ -85,7 +85,7 @@
             "type": "Activity"
         }, {
             "name": "Qualidade_3",
-            "type": "Agent"
+            "type": "Person"
         }, {
             "name": "Emissão_de_Livros_Fiscais",
             "type": "Entity"
@@ -94,7 +94,7 @@
             "type": "Entity"
         }, {
             "name": "VB6_2",
-            "type": "Agent"
+            "type": "Person"
         }, {
             "name": "Abertura_da_Requisição_de_Mudança_25",
             "type": "Activity"

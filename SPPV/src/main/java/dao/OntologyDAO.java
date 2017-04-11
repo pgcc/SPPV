@@ -12,12 +12,22 @@ public class OntologyDAO {
 
     private static OntologyDAO instance = new OntologyDAO();
 
-    private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/final2Ex1.owl";
-    private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/ex1.owl";
-    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/inferredTest.owl";
-    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/assertedTest.owl";
-    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/OntologyProvProcess-loadnotinference.owl";
-    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/OntologyProvProcess-load.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/final2Ex1.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/ex1.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/ex2.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/ex2.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/prov-oextload.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/prov-oext.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/final2Ex1.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/inferredTest.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/assertedTest.owl";
+    //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/OntologyProvProcess-loadnotinference.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/OntologyProvProcess-load.owl";
+    private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/1-OntologyProvProcess-loadnotinference.owl";
+    private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/1-OntologyProvProcess-load.owl";
+   // private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/2-OntologyProvProcess-loadnotinference.owl";
+    //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/SPPV2/SPPV/src/main/webapp/owl/2-OntologyProvProcess-load.owl";
+
     private String uri = "http://www.w3.org/ns/prov#";
     private OWLOntology inferredOntology;
     private OWLOntology assertedOontology;

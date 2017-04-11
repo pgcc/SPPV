@@ -158,7 +158,7 @@ $(document).ready(function () {
 //prov-oext
 //provprocess1
 //provprocess2
-//$.post("./frontController"){
+
     d3.json("./json/graph.json", function (graph) {
         //$.post("FrontController?action=ReadGraph", function (json) {
 

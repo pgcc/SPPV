@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="duplicate:http://www.semanticweb.org/041784/ontologies/2015/11/untitled-ontology-72" uri="final2Ex1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="duplicate:http://www.semanticweb.org/041784/ontologies/2015/11/untitled-ontology-72" uri="finalEx1.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="http://www.semanticweb.org/041784/ontologies/2015/11/untitled-ontology-77" uri="inferredTest.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="http://www.semanticweb.org/gabidalpra/ontologies/2016/6/untitled-ontology-59" uri="OntologyProvProcess-load.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="duplicate:http://www.w3.org/ns/prov" uri="assertedTest.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="duplicate:http://www.w3.org/ns/prov" uri="prov-oext.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1479320763955" name="http://www.w3.org/ns/prov#" uri="ex1.owl"/>
+    </group>
+</catalog>
