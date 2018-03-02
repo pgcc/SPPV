@@ -19,6 +19,8 @@ $(document).ready(function () {
 
     //---------- Creating the jQuery-UI widgets
     $("#radioset").buttonset();
+    $("#radiosize").buttonset();
+    $("#radioSimilarity").buttonset();
     $("button").button();
     $("#nodeA").combobox();
     $("#nodeB").combobox();
@@ -33,17 +35,16 @@ $(document).ready(function () {
     }, "text");
     //---------- Function of Visualization Option
     $("input[type=radio][name=visOptions]").change(function () {
-        if (this.value === "flowLayout") {
-            //$("#RadioChartVis").children().hide();
+        if (this.value === "sourceLayout") {
             $("#chartVis").hide();
             $("#graphVis").hide();
-            $("#flowVis").show();
+            $("#sourceVis").show();
         } else if (this.value === "chartsLayout") {
-            $("#flowVis").hide();
+            $("#sourceVis").hide();
             $("#graphVis").hide();
             $("#chartVis").show();
         } else if (this.value === "graphLayout") {
-            $("#flowVis").hide();
+            $("#sourceVis").hide();
             $("#chartVis").hide();
             $(window).resize();
             $("#graphVis").show();
@@ -58,11 +59,11 @@ $(document).ready(function () {
                 $("#actorImage").attr("src", "images/Agent.png");
                 $("#entityImage").attr("src", "images/Entity.png");
                 if (node.type === "Activity") {
-                    $("#taskNameLabel").html("Activities");
+                    $("#taskNameLabel").html("Ac<u>t</u>ivities");
                 } else if (node.type === "Agent") {
-                    $("#actorNameLabel").html("Agents");
+                    $("#actorNameLabel").html("<u>A</u>gents");
                 } else if (node.type === "Entity") {
-                    $("#entityNameLabel").html("Entities");
+                    $("#entityNameLabel").html("<u>E</u>ntities");
                     $("#entityImage").attr("width", "24px");
                     $("#entityImage").attr("height", "");
                 }
@@ -74,13 +75,13 @@ $(document).ready(function () {
             $("#entityImage").attr("src", "images/Data.png");
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
-                    $("#taskNameLabel").html("Task");
+                    $("#taskNameLabel").html("<u>T</u>ask");
                     return "./images/Task.png";
                 } else if (node.type === "Agent") {
-                    $("#actorNameLabel").html("Actor");
+                    $("#actorNameLabel").html("<u>A</u>ctor");
                     return "./images/Actor.png";
                 } else if (node.type === "Entity") {
-                    $("#entityNameLabel").html("Data Objects");
+                    $("#entityNameLabel").html("Data Obj<u>e</u>cts");
                     $("#entityImage").attr("height", "24px");
                     $("#entityImage").attr("width", "");
                     return "./images/Data.png";
@@ -92,6 +93,25 @@ $(document).ready(function () {
                     return "./images/GroupOfActors.png";
                 }
             });
+        }
+    });
+    //---------- Function of Display Options widget
+    $("input[type=radio][name=size]").change(function () {
+        var nodes = d3.selectAll("image");
+        if (this.value === "on") {
+            nodes.attr("width", function (n) {
+                return (n.size + n.size + 0.5) * 50;
+            })
+                    .attr("height", function (n) {
+                        return (n.size + n.size + 0.5) * 50;
+                    });
+        } else {
+            nodes.attr("width", function () {
+                return "24";
+            })
+                    .attr("height", function () {
+                        return "24";
+                    });
         }
     });
     //---------- Function of Filter Options widget
@@ -159,30 +179,6 @@ $(document).ready(function () {
         }
     });
 
-    $("#agentIcon").change(function () {
-        if ($("#agentIcon").prop("checked")) {
-            $("text.PersonIcon").fadeIn();
-        } else {
-            $("text.PersonIcon").fadeOut();
-        }
-    });
-
-    $("#activityIcon").change(function () {
-        if ($("#activityIcon").prop("checked")) {
-            $("text.ActivityIcon").fadeIn();
-        } else {
-            $("text.ActivityIcon").fadeOut();
-        }
-    });
-
-    $("#entityIcon").change(function () {
-        if ($("#entityIcon").prop("checked")) {
-            $("text.EntityIcon").fadeIn();
-        } else {
-            $("text.EntityIcon").fadeOut();
-        }
-    });
-    
     $("#showAll")
             .click(function (event) {
                 event.preventDefault();

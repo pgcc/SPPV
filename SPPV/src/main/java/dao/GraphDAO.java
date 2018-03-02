@@ -51,15 +51,6 @@ public class GraphDAO {
                             String targetName = individualProperty.asOWLNamedIndividual().getIRI().getFragment();
                             String targetType = targetTypes.toString();
                             targetType = filterUrl(targetType);
-
-                            if (!targetType.equals("Activity")) {
-                                if (targetType.equals("Person") || targetType.equals("Agent") || targetType.equals("Organization") || targetType.equals("SoftwareAgent")) {
-                                    targetType = "Agent";
-                                } else {
-                                    targetType = "Entity";
-                                }
-                            }
-
                             targets.add(new Node(targetName, targetType));
                             propertyNames.add(propertyName);
                         }

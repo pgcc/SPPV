@@ -6,14 +6,17 @@
 
     <link href="css/jquery-ui.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/jquery.dataTables.min.css" rel="stylesheet">
 
     <script src="js/jquery-2.1.4.min.js"></script> 
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/jquery-ui.custom-combobox.js"></script>
     <script src="js/d3.js"></script>
+    <script src="js/jquery.dataTables.min.js"></script>
     <script src="js/calculus.js"></script>
     <script src="js/index.js"></script>
     <script src="js/indexConfig.js"></script>
+
 
     <div id="config">
         <header>
@@ -24,39 +27,39 @@
                     Rendering Time: <span id="timeRendering">00:00</span>
                 </div>
                 <div id="visOptions">
-                    <input type="radio" id="flowLayout" name="visOptions" value="flowLayout" checked><label for="flowLayout">Dataflow Visualization</label>
+                    <input type="radio" id="sourceLayout" name="visOptions" value="sourceLayout"><label for="sourceLayout">Source Visualization</label>
                     <input type="radio" id="chartsLayout" name="visOptions" value="chartsLayout"><label for="chartsLayout">Data Chart Visualization</label>
-                    <input type="radio" id="graphLayout" name="visOptions" value="graphLayout"><label for="graphLayout">Graph Visualization</label>
+                    <input type="radio" id="graphLayout" name="visOptions" value="graphLayout" checked><label for="graphLayout">Graph Visualization</label>
                 </div>
         </header>
-        <div id="flowVis">
-            Dataflow Visualization<br>
+        <div id="sourceVis">
+            <pre id="source" class="codeLike">
+            Source Code Visualization<br>
+            </pre>
         </div>
         <div id="chartVis">
             Data Chart Visualization<br>
             <h4>Local</h4>
-            <table>
+            <table id="nodeTable" class="display" cellspacing="0">
                 <tbody>
                     <tr>
-                        <th>NODE</th><th>BEFORE</th><th>AFTER</th>
+                        <th>Type</th><th>Number of Nodes</th>
                     </tr>
                     <tr>
-                        <td>Agent</td><td id="agentAmaunt"></td><td id="agentAfter"></td>
+                        <td>Agent</td><td id="agentAmaunt"></td>
                     </tr>
                     <tr>
-                        <td>Activity</td><td id="activityAmaunt"></td><td id="activityAfter"></td>
+                        <td>Activity</td><td id="activityAmaunt"></td>
                     </tr>
                     <tr>
-                        <td>Entity</td><td id="entityAmaunt"></td><td id="entityAfter"></td>
+                        <td>Entity</td><td id="entityAmaunt"></td>
                     </tr>
                     <tr>
-                        <td>Total</td><td id="totalAmaunt"></td><td id="totalAfter"></td>
+                        <td>Total</td><td id="totalAmaunt"></td>
                     </tr>
                 </tbody>
             </table>
-            <table>
-                <tbody id="calculus">
-                </tbody>
+            <table id="metricTable" class="display" cellspacing="0" width="100%">
             </table>
         </div>
         <div id="graphVis">
@@ -69,10 +72,50 @@
                     <h2 class="demoHeaders">Display Options</h2>
                     <div class="filters">
                         <span>Symbols</span>
-                        <div id="radioset">
-                            <input type="radio" id="prov" name="icon" value="prov" checked><label for="prov">PROV</label>
-                            <input type="radio" id="bpmn" name="icon" value="bpmn"><label for="bpmn">BPMN</label>
-                        </div>
+                        <table class="largeTable">
+                            <tbody>
+                                <tr>
+                                    <td class="right"><img id="actorImage" src="images/prov.png" alt="Agent" width="24"></td>
+                                    <td>
+                                        <div id="radioset">
+                                            <input type="radio" id="prov" name="icon" value="prov" checked><label for="prov">PROV</label>
+                                            <input type="radio" id="bpmn" name="icon" value="bpmn"><label for="bpmn">BPMN</label>
+                                        </div>
+                                    </td>
+                                    <td class="left"><img id="actorImage" src="images/bpmn.png" alt="Agent" width="24"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>Node importance as size</span>
+                        <table class="largeTable">
+                            <tbody>
+                                <tr>
+                                    <td class="right"><img id="actorImage" src="images/sizeon.png" alt="Dif. sizes" width="24"></td>
+                                    <td>
+                                        <div id="radiosize">
+                                            <input type="radio" id="sizeOn" name="size" value="on"><label for="sizeOn">ON</label>
+                                            <input type="radio" id="sizeOff" name="size" value="off" checked><label for="sizeOff">OFF</label>
+                                        </div>
+                                    </td>
+                                    <td class="left"><img id="actorImage" src="images/sizeoff.png" alt="One size" width="24"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <span>Similarity of nodes</span>
+                        <table class="largeTable">
+                            <tbody>
+                                <tr>
+                                    <td class="right"><img id="actorImage" src="images/nodesimilarity.png" alt="Similarity (%)" width="48"></td>
+                                    <td>
+                                        <div id="radioSimilarity">
+                                            <input type="radio" id="simOn" name="similarity" value="on"><label for="simOn">ON</label>
+                                            <input type="radio" id="simOff" name="similarity" value="off" checked><label for="simOff">OFF</label>
+                                        </div>
+                                    </td>
+                                    <td class="left"><img id="actorImage" src="images/nodenames.png" alt="Names" width="48"></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <h2 class="demoHeaders">Filter Options</h2>
                     <div class="filters">
@@ -90,7 +133,7 @@
                                 </tr>
                                 <tr>
                                     <td><img id="actorImage" src="images/agent3.png" alt="Agent" width="24"></td>
-                                    <td><div id="actorNameLabel">Agents</div></td>
+                                    <td><div id="actorNameLabel"><u>A</u>gents</div></td>
                                     <td>
                                         <div id="agentFilter" class="fr">
                                             <input type="checkbox" id="agentIcon" value="agentIcon" checked><label for="agentIcon">Icons</label>
@@ -100,7 +143,7 @@
                                 </tr>
                                 <tr>
                                     <td><img id="taskImage" src="images/activity3.png" alt="Activity" width="24"></td>
-                                    <td><div id="taskNameLabel">Activities</div></td>
+                                    <td><div id="taskNameLabel">Ac<u>t</u>ivities</div></td>
                                     <td>
                                         <div id="activityFilter">
                                             <input type="checkbox" id="activityIcon" value="activityIcon" checked><label for="activityIcon">Icons</label>
@@ -110,7 +153,7 @@
                                 </tr>
                                 <tr>
                                     <td><img id="entityImage" src="images/entity3.png" alt="Entity" width="24"></td>
-                                    <td><div id="entityNameLabel">Entities</div></td>
+                                    <td><div id="entityNameLabel"><u>E</u>ntities</div></td>
                                     <td>
                                         <div id="entityFilter">
                                             <input type="checkbox" id="entityIcon" value="entityIcon" checked><label for="entityIcon">Icons</label>
@@ -148,10 +191,11 @@
     <div id="nodeTip">
         <table class="tableTip">
             <tbody>
-                <tr><th>Type</th><th>Name</th></tr>
+                <tr><th>Name</th><th>Type</th><th>Specific Type</th></tr>
                 <tr>
-                    <td><span id="tipNodeType"></span></td>
                     <td><span id="tipNodeName"></span></td>
+                    <td><span id="tipNodeType"></span></td>
+                    <td><span id="tipNodeSpecificType"></span></td>
                 </tr>
             </tbody>
         </table>
