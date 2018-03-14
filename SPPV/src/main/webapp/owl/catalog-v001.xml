@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog prefer="public" xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog">
+    <group id="Folder Repository, directory=, recursive=true, Auto-Update=true, version=2" prefer="public" xml:base="">
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.semanticweb.org/041784/ontologies/2015/11/untitled-ontology-77" uri="ont0-5I.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.semanticweb.org/041784/ontologies/2017/7/untitled-ontology-13" uri="ont1-600I.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.semanticweb.org/041784/ontologies/2017/7/untitled-ontology-15" uri="ont2-600I.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.semanticweb.org/041784/ontologies/2017/7/untitled-ontology-16" uri="ont2-50I.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.semanticweb.org/041784/ontologies/2017/7/untitled-ontology-9" uri="ont1-50I.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.w3.org/ns/prov" uri="ont0-5A.owl"/>
+        <uri id="Automatically generated entry, Timestamp=1503942816083" name="http://www.w3.org/ns/prov#" uri="ont1-50A.owl"/>
+    </group>
+</catalog>

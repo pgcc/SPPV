@@ -97,7 +97,7 @@ select {
     color: #666;
     font-weight: bold;
     font-size: large;
-    font-family: consolas, monospace;
+    font-family: monospace;
 }
 #graph{
     border: 1px solid #cccccc;
@@ -107,16 +107,6 @@ select {
 }
 #filterTable{
     text-align: left;
-}
-.largeTable{
-    width: 100%;
-    align-content: center;
-}
-.right{
-    text-align: right;
-}
-.left{
-    text-align: left; 
 }
 /* ---------- GRAPH ELEMENTS DEFINITIONS */
 line.asserted {

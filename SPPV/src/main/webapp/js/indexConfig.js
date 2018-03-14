@@ -19,6 +19,8 @@ $(document).ready(function () {
 
     //---------- Creating the jQuery-UI widgets
     $("#radioset").buttonset();
+    $("#radiosize").buttonset();
+    $("#radioSimilarity").buttonset();
     $("button").button();
     $("#nodeA").combobox();
     $("#nodeB").combobox();
@@ -26,122 +28,156 @@ $(document).ready(function () {
     $("#agentFilter").buttonset();
     $("#activityFilter").buttonset();
     $("#entityFilter").buttonset();
+    $("#visOptions").buttonset();
     //---------- Loading the Path
     $.post("FrontController?action=ReadOWLPath", function (string) {
         $("#owlPath").html(string);
     }, "text");
+    //---------- Function of Visualization Option
+    $("input[type=radio][name=visOptions]").change(function () {
+        if (this.value === "sourceLayout") {
+            $("#chartVis").hide();
+            $("#graphVis").hide();
+            $("#sourceVis").show();
+        } else if (this.value === "chartsLayout") {
+            $("#sourceVis").hide();
+            $("#graphVis").hide();
+            $("#chartVis").show();
+        } else if (this.value === "graphLayout") {
+            $("#sourceVis").hide();
+            $("#chartVis").hide();
+            $(window).resize();
+            $("#graphVis").show();
+        }
+    });
     //---------- Function of Display Options widget
     $("input[type=radio][name=icon]").change(function () {
         var images = d3.selectAll("image");
         if (this.value === "prov") {
             images.attr("xlink:href", function (node) {
+                $("#taskImage").attr("src", "images/Activity.png");
+                $("#actorImage").attr("src", "images/Agent.png");
+                $("#entityImage").attr("src", "images/Entity.png");
                 if (node.type === "Activity") {
-                    $("#taskNameLabel").html("Activities");
-                    $("#taskImage").attr("src", "images/activity3.png");
-                    return "./images/activity" + calcBrightness(node.index);
-                } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
-                    $("#actorNameLabel").html("Agents");
-                    $("#actorImage").attr("src", "images/agent3.png");
-                    return "./images/agent" + calcBrightness(node.index);
-                } else {
-                    $("#entityNameLabel").html("Entities");
-                    $("#entityImage").attr("src", "images/entity3.png");
+                    $("#taskNameLabel").html("Ac<u>t</u>ivities");
+                } else if (node.type === "Agent") {
+                    $("#actorNameLabel").html("<u>A</u>gents");
+                } else if (node.type === "Entity") {
+                    $("#entityNameLabel").html("<u>E</u>ntities");
                     $("#entityImage").attr("width", "24px");
                     $("#entityImage").attr("height", "");
-                    return "./images/entity" + calcBrightness(node.index);
                 }
+                return "./images/" + node.type + ".png";
             });
         } else if (this.value === "bpmn") {
+            $("#taskImage").attr("src", "images/Task.png");
+            $("#actorImage").attr("src", "images/Actor.png");
+            $("#entityImage").attr("src", "images/Data.png");
             images.attr("xlink:href", function (node) {
                 if (node.type === "Activity") {
-                    $("#taskNameLabel").html("Task");
-                    $("#taskImage").attr("src", "images/task3.png");
-                    return "./images/task" + calcBrightness(node.index);
-                } else if (node.type === "Person" || node.type === "Agent" || node.type === "Organization" || node.type === "SoftwareAgent") {
-                    $("#actorNameLabel").html("Actors");
-                    $("#actorImage").attr("src", "images/actor3.png");
-                    return "./images/actor" + calcBrightness(node.index);
-                } else {
-                    $("#entityNameLabel").html("Data Objects");
-                    $("#entityImage").attr("src", "images/data3.png");
+                    $("#taskNameLabel").html("<u>T</u>ask");
+                    return "./images/Task.png";
+                } else if (node.type === "Agent") {
+                    $("#actorNameLabel").html("<u>A</u>ctor");
+                    return "./images/Actor.png";
+                } else if (node.type === "Entity") {
+                    $("#entityNameLabel").html("Data Obj<u>e</u>cts");
                     $("#entityImage").attr("height", "24px");
                     $("#entityImage").attr("width", "");
-                    return "./images/data" + calcBrightness(node.index);
+                    return "./images/Data.png";
+                } else if (node.type === "GroupOfActivities") {
+                    return "./images/GroupOfTasks.png";
+                } else if (node.type === "GroupOfEntities") {
+                    return "./images/GroupOfDatas.png";
+                } else if (node.type === "GroupOfAgents") {
+                    return "./images/GroupOfActors.png";
                 }
             });
         }
     });
+    //---------- Function of Display Options widget
+    $("input[type=radio][name=size]").change(function () {
+        var nodes = d3.selectAll("image");
+        if (this.value === "on") {
+            nodes.attr("width", function (n) {
+                return (n.size + n.size + 0.5) * 50;
+            })
+                    .attr("height", function (n) {
+                        return (n.size + n.size + 0.5) * 50;
+                    });
+        } else {
+            nodes.attr("width", function () {
+                return "24";
+            })
+                    .attr("height", function () {
+                        return "24";
+                    });
+        }
+    });
     //---------- Function of Filter Options widget
-    $("input[type=checkbox][id=allNames]").change(function () {
-        if ($("input[type=checkbox][id=allNames]").prop("checked")) {
-            $("input[type=checkbox][id=agentName]").prop("checked", true);
-            $("input[type=checkbox][id=activityName]").prop("checked", true);
-            $("input[type=checkbox][id=entityName]").prop("checked", true);
+    $("#allNames").change(function () {
+        if ($("#allNames").prop("checked")) {
+            $("#agentName").prop("checked", true);
+            $("#agentName+label").addClass("ui-state-active");
+            $("#activityName").prop("checked", true);
+            $("#activityName+label").addClass("ui-state-active");
+            $("#entityName").prop("checked", true);
+            $("#entityName+label").addClass("ui-state-active");
             $("text").fadeIn();
         } else {
-            $("input[type=checkbox][id=agentName]").prop("checked", false);
-            $("input[type=checkbox][id=activityName]").prop("checked", false);
-            $("input[type=checkbox][id=entityName]").prop("checked", false);
+            $("#agentName").prop("checked", false);
+            $("#agentName+label").removeClass("ui-state-active");
+            $("#activityName").prop("checked", false);
+            $("#activityName+label").removeClass("ui-state-active");
+            $("#entityName").prop("checked", false);
+            $("#entityName+label").removeClass("ui-state-active");
             $("text").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=agentName]").change(function () {
-        if ($("input[type=checkbox][id=agentName]").prop("checked")) {
-            $("text.PersonName").fadeIn();
+    $("#agentName").change(function () {
+        if ($("#agentName").prop("checked")) {
+            $("text.Agent").fadeIn();
         } else {
-            $("text.PersonName").fadeOut();
+            $("text.Agent").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=activityName]").change(function () {
-        if ($("input[type=checkbox][id=activityName]").prop("checked")) {
-            $("text.ActivityName").fadeIn();
+    $("#activityName").change(function () {
+        if ($("#activityName").prop("checked")) {
+            $("text.Activity").fadeIn();
         } else {
-            $("text.ActivityName").fadeOut();
+            $("text.Activity").fadeOut();
         }
     });
 
-    $("input[type=checkbox][id=entityName]").change(function () {
-        if ($("input[type=checkbox][id=entityName]").prop("checked")) {
-            $("text.EntityName").fadeIn();
+    $("#entityName").change(function () {
+        if ($("#entityName").prop("checked")) {
+            $("text.Entity").fadeIn();
         } else {
-            $("text.EntityName").fadeOut();
+            $("text.Entity").fadeOut();
         }
     });
-    //---------- Function of Filter Nodes widget
-    $("#filterNodes")
-            .click(function (event) {
-                event.preventDefault();
-                setOpacity(0.1);
-                var nA = $("#nodeA").val();
-                var nB = $("#nodeB").val();
-                d3.select("#node" + nA).style("opacity", 1.0);
-                d3.select("#name" + nA).style("opacity", 1.0);
-                d3.selectAll(".s" + nA).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.target.index).style("opacity", 1.0);
-                    d3.select("#name" + p.target.index).style("opacity", 1.0);
-                });
-                d3.selectAll(".t" + nA).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.source.index).style("opacity", 1.0);
-                    d3.select("#name" + p.source.index).style("opacity", 1.0);
-                });
-                d3.select("#node" + nB).style("opacity", 1.0);
-                d3.select("#name" + nB).style("opacity", 1.0);
-                d3.selectAll(".s" + nB).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.target.index).style("opacity", 1.0);
-                    d3.select("#name" + p.target.index).style("opacity", 1.0);
-                });
-                d3.selectAll(".t" + nB).each(function (p) {
-                    d3.select(this).style("opacity", 1.0);
-                    d3.select("#node" + p.source.index).style("opacity", 1.0);
-                    d3.select("#name" + p.source.index).style("opacity", 1.0);
-                });
-                $("#hideFilterNodeActive").val("true");
-            });
+
+    $("#allIcons").change(function () {
+        if ($("#allIcons").prop("checked")) {
+            $("#agentIcon").prop("checked", true);
+            $("#agentIcon+label").addClass("ui-state-active");
+            $("#activityIcon").prop("checked", true);
+            $("#activityIcon+label").addClass("ui-state-active");
+            $("#entityIcon").prop("checked", true);
+            $("#entityIcon+label").addClass("ui-state-active");
+            $("text").fadeIn();
+        } else {
+            $("#agentIcon").prop("checked", false);
+            $("#agentIcon+label").removeClass("ui-state-active");
+            $("#activityIcon").prop("checked", false);
+            $("#activityIcon+label").removeClass("ui-state-active");
+            $("#entityIcon").prop("checked", false);
+            $("#entityIcon+label").removeClass("ui-state-active");
+            $("text").fadeOut();
+        }
+    });
 
     $("#showAll")
             .click(function (event) {

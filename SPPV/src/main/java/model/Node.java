@@ -27,7 +27,10 @@ public class Node {
     }
 
     boolean sameAs(Node target) {
-        return name.equalsIgnoreCase(target.getName());
+        if (this.name instanceof String) {
+            return this.name.equalsIgnoreCase(target.getName());
+        }
+        return false;
     }
 
 }
