@@ -12,12 +12,13 @@ public class OntologyDAO {
 
     private static OntologyDAO instance = new OntologyDAO();
 
-    private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/final2Ex1.owl";
-    private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/ex1.owl";
+    private String inferredFile = "C:/Users/Weiner/Documents/NetBeansProjects/Arquivos/final2Ex1.owl";
+    private String assertedFile = "C:/Users/Weiner/Documents/NetBeansProjects/Arquivos/ex1.owl";
     //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/inferredTest.owl";
     //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/assertedTest.owl";
     //private String inferredFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/OntologyProvProcess-loadnotinference.owl";
     //private String assertedFile = "C:/Users/041784/Documents/NetBeansProjects/Arquivos/OntologyProvProcess-load.owl";
+    
     private String uri = "http://www.w3.org/ns/prov#";
     private OWLOntology inferredOntology;
     private OWLOntology assertedOontology;
