@@ -268,7 +268,7 @@ $(document).ready(function () {
             ]
         });
 
-        graph = graphReduction(graph);
+        //graph = graphReduction(graph);
 
         resize();
         var linkedByIndex = {};
