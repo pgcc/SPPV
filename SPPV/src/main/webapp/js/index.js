@@ -241,11 +241,12 @@ $(document).ready(function () {
     var zoom = d3.behavior.zoom().scaleExtent([min_zoom, max_zoom])
     var g = svg.append("g");
     svg.style("cursor", "move");
-    //d3.json("./json/provprocess2.json", function (graph) {
+
     $.post("FrontController?action=ReadGraph", function (graph) {
 
         calculus(graph);
         var data = setData(graph.nodes);
+
         $("#nodeTable").DataTable({
             data: data,
             columns: [
@@ -266,6 +267,8 @@ $(document).ready(function () {
                 {title: "Influence"},
             ]
         });
+
+        graph = graphReduction(graph);
 
         resize();
         var linkedByIndex = {};
@@ -302,6 +305,7 @@ $(document).ready(function () {
                 .style("stroke", function (p) {
                     return pathColor(p);
                 });
+                
         var node = g.selectAll(".node")
                 .data(graph.nodes)
                 .enter().append("g")
@@ -319,6 +323,7 @@ $(document).ready(function () {
             zoom.translate([dcx, dcy]);
             g.attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
         });
+        
         var tocolor = "fill";
         var towhite = "stroke";
         if (outline) {
@@ -344,7 +349,7 @@ $(document).ready(function () {
                         circle.attr("transform", function (d) {
                             return "translate(" + (d.x - (d.size * 12)) + "," + (d.y - (d.size * 12)) + ")";
                         });
-                        return (n.size + 1) * 24;
+                        return (n.size + 1) * 24; 
                     } else {
                         return 24;
                     }
@@ -354,6 +359,7 @@ $(document).ready(function () {
                 })
                 .style("stroke-width", nominal_stroke)
                 .style(towhite, "#666666");
+        
         var text = g.selectAll(".text")
                 .data(graph.nodes)
                 .enter().append("text")
@@ -400,6 +406,7 @@ $(document).ready(function () {
                     writeNodeTip(graph, d);
                     nodeTip.style("opacity", 0.9);
                 });
+                
         path.on("mouseover", function (p) {
             writePathTip(p);
             pathTip.style("opacity", 0.9);
@@ -407,6 +414,7 @@ $(document).ready(function () {
                 .on("mouseout", function (p) {
                     pathTip.style("opacity", 0);
                 });
+                
         d3.select(window).on("mouseup",
                 function () {
                     if (focus_node !== null)
@@ -423,6 +431,7 @@ $(document).ready(function () {
                     if (highlight_node === null)
                         exit_highlight();
                 });
+                
         function exit_highlight() {
             highlight_node = null;
             if (focus_node === null) {
