@@ -85,28 +85,27 @@ function groupNodes(graph, group) {
     });
     
     //The group recive new type and name
-    var newGroup = JSON.parse('{"name":"", "type":"", "degree":0, "specificType":"", "nodes":[], "size":0}');
+    var newGroup = JSON.parse('{"name":"", "type":"", "degree":0, "specificType":"", "id":0, "nodes":[], "size":0}');
     newGroup.degree = graph.nodes[group[0]].degree;
     newGroup.nodes = nodeGroup;
-    newGroup.size = group[0].size * group.length;
+    newGroup.size = newGroup.nodes[0].size * newGroup.nodes.length;
+    newGroup.name = "x " + newGroup.nodes.length;
     switch (graph.nodes[group[0]].type) {
         case "Activity":
             newGroup.type = "GroupOfActivities";
             newGroup.specificType = "Activities";
-            newGroup.name = "x " + newGroup.nodes.length;
             break;
         case "Entity":
             newGroup.type = "GroupOfEntities";
             newGroup.specificType = "Entities";
-            newGroup.name = "x " + newGroup.nodes.length;
             break;
         default:
             newGroup.type = "GroupOfAgents";
             newGroup.specificType = "Agents";
-            newGroup.name = "x " + newGroup.nodes.length;
             break;
     }
     var groupIndex = graph.nodes.length - 1;
+    newGroup.id = groupIndex;
     graph.nodes.push(newGroup);
 
     //Slice the first node and get its links to the group

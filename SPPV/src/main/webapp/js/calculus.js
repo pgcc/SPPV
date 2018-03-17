@@ -3,7 +3,6 @@ function calculus(graph) {
     var maxDegree = calcDegree(graph);
     adjustTypes(graph);
     calcMetrics(graph);
-    $("#source").html(JSON.stringify(graph, null, 2));
     setCharts(graph);
     return graph;
 }

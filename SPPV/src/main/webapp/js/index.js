@@ -13,9 +13,16 @@ $(document).ready(function () {
             $("#t" + n.id).html(n.name);
         });
         if ($("input[name='similarity']:checked").val() === "off") {
-            $("#tipNodeName").html(node.name);
-            $("#tipNodeType").html(node.type);
-            $("#tipNodeSpecificType").html(node.specificType);
+            var nameHeader = "<tr><th>Name</th><th>Type</th><th>Specific Type</th></tr>";
+            if (node.type.lastIndexOf("GroupOf") == -1) {
+                $("#tipNodeName").html(nameHeader + "<tr><td>" + node.name + "</td><td>" + node.type + "</td><td>" + node.specificType + "</td></tr>");
+            } else {
+                $("#tipNodeName").html(nameHeader);
+                node.nodes.forEach(function (nd) {
+                    $("#tipNodeName").append("<tr><td>" + nd.name + "</td><td>" + nd.type + "</td><td>" + nd.specificType + "</td></tr>");
+                });
+            }
+
             //Calculating the node tip position
             var width = $(window).width();
             var posX = d3.event.pageX;
@@ -204,6 +211,7 @@ $(document).ready(function () {
         pathTip.style("left", posX + "px")
                 .style("top", posY + "px");
     }
+
     //--------------------------------------------------------------SVG Creation
 
     var w = window.innerWidth;
@@ -246,6 +254,7 @@ $(document).ready(function () {
 
         calculus(graph);
         var data = setData(graph.nodes);
+        $("#source").html(JSON.stringify(graph, null, 2));
 
         $("#nodeTable").DataTable({
             data: data,
@@ -268,7 +277,7 @@ $(document).ready(function () {
             ]
         });
 
-        //graph = graphReduction(graph);
+        graph = graphReduction(graph);
 
         resize();
         var linkedByIndex = {};
@@ -305,7 +314,7 @@ $(document).ready(function () {
                 .style("stroke", function (p) {
                     return pathColor(p);
                 });
-                
+
         var node = g.selectAll(".node")
                 .data(graph.nodes)
                 .enter().append("g")
@@ -323,7 +332,7 @@ $(document).ready(function () {
             zoom.translate([dcx, dcy]);
             g.attr("transform", "translate(" + dcx + "," + dcy + ")scale(" + zoom.scale() + ")");
         });
-        
+
         var tocolor = "fill";
         var towhite = "stroke";
         if (outline) {
@@ -349,7 +358,7 @@ $(document).ready(function () {
                         circle.attr("transform", function (d) {
                             return "translate(" + (d.x - (d.size * 12)) + "," + (d.y - (d.size * 12)) + ")";
                         });
-                        return (n.size + 1) * 24; 
+                        return (n.size + 1) * 24;
                     } else {
                         return 24;
                     }
@@ -359,7 +368,7 @@ $(document).ready(function () {
                 })
                 .style("stroke-width", nominal_stroke)
                 .style(towhite, "#666666");
-        
+
         var text = g.selectAll(".text")
                 .data(graph.nodes)
                 .enter().append("text")
@@ -406,7 +415,7 @@ $(document).ready(function () {
                     writeNodeTip(graph, d);
                     nodeTip.style("opacity", 0.9);
                 });
-                
+
         path.on("mouseover", function (p) {
             writePathTip(p);
             pathTip.style("opacity", 0.9);
@@ -414,7 +423,7 @@ $(document).ready(function () {
                 .on("mouseout", function (p) {
                     pathTip.style("opacity", 0);
                 });
-                
+
         d3.select(window).on("mouseup",
                 function () {
                     if (focus_node !== null)
@@ -431,7 +440,7 @@ $(document).ready(function () {
                     if (highlight_node === null)
                         exit_highlight();
                 });
-                
+
         function exit_highlight() {
             highlight_node = null;
             if (focus_node === null) {
@@ -515,6 +524,7 @@ $(document).ready(function () {
         force.on("tick", function () {
 
             circle.attr("transform", function (d) {
+                //return "translate(" + (d.x - 12) + "," + (d.y - 12) + ")";
                 return "translate(" + (d.x - ((d.size + 1) * 12)) + "," + (d.y - ((d.size + 1) * 12)) + ")";
             });
             text.attr("transform", function (d) {
@@ -655,6 +665,7 @@ $(document).ready(function () {
             setDisplay(path, node, text);
         });
     }, "json");
+
     function vis_by_type(type) {
         switch (type) {
             case "Entity":
