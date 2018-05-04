@@ -12,8 +12,8 @@ public class OntologyDAO {
 
     private static OntologyDAO instance = new OntologyDAO();
 
-    private String inferredFile = "C:/Users/Weiner/Documents/NetBeansProjects/Arquivos/final2Ex1.owl";
-    private String assertedFile = "C:/Users/Weiner/Documents/NetBeansProjects/Arquivos/ex1.owl";
+    private String inferredFile = "/path/to/inferred_ontology.owl";
+    private String assertedFile = "/path/to/asserted_ontology.owl";
     
     private String uri = "http://www.w3.org/ns/prov#";
     private OWLOntology inferredOntology;
